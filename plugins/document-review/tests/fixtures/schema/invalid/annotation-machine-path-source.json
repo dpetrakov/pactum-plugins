@@ -1,0 +1,52 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/anno.jsonld",
+    {
+      "bbdr": "urn:bb-docs:vocab:v1#"
+    }
+  ],
+  "type": "Annotation",
+  "id": "urn:bb-docs:00000000-0000-4000-8000-071ca2227754:annotation:00000000-0000-4000-8000-49915e0d7d4b",
+  "created": "2026-10-06T12:00:00.000Z",
+  "creator": {
+    "type": "Person",
+    "name": "Alice",
+    "email": "mailto:alice@example.com"
+  },
+  "motivation": "commenting",
+  "body": {
+    "type": "TextualBody",
+    "value": "Fix this",
+    "format": "text/markdown"
+  },
+  "target": {
+    "type": "SpecificResource",
+    "source": "file:///home/example/project/docs/a.md",
+    "selector": [
+      {
+        "type": "TextQuoteSelector",
+        "exact": "quote",
+        "prefix": "",
+        "suffix": ""
+      },
+      {
+        "type": "TextPositionSelector",
+        "start": 0,
+        "end": 5
+      }
+    ],
+    "bbdr:targetKind": "text",
+    "bbdr:docId": "00000000-0000-4000-8000-139d544b821b",
+    "bbdr:revisionId": "00000000-0000-4000-8000-88b082dbd8ec",
+    "bbdr:path": "docs/a.md",
+    "bbdr:snapshot": "66a045b452102c59d840ec097d59d9467e13a3f34f6494e539ffd32c1bb35f18",
+    "bbdr:segments": [],
+    "bbdr:sourceRanges": [
+      {
+        "start": 0,
+        "end": 5
+      }
+    ]
+  },
+  "bbdr:schemaVersion": "1.0"
+}

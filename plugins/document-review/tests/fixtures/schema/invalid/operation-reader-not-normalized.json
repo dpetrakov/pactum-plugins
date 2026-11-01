@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0",
+  "id": "00000000-0000-4000-8000-7d3c6b8d51ac",
+  "actor": {
+    "kind": "human",
+    "name": "Alice",
+    "email": "alice@example.com"
+  },
+  "timestamp": "2026-10-06T12:00:00.000Z",
+  "parents": [
+    "00000000-0000-4000-8000-3946ca64ff78",
+    "00000000-0000-4000-8000-f64551fcd6f0"
+  ],
+  "changes": [
+    {
+      "type": "read.acknowledged",
+      "receiptId": "00000000-0000-4000-8000-82f3e9c695dc",
+      "readerId": "Alice@Example.com",
+      "docId": "00000000-0000-4000-8000-139d544b821b",
+      "revisionId": "00000000-0000-4000-8000-88b082dbd8ec",
+      "scope": "block",
+      "versions": [],
+      "tombstones": []
+    }
+  ]
+}

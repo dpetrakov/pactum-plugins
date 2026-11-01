@@ -1,0 +1,391 @@
+{
+  "$id": "urn:bb-docs:vocab:v1#schema/annotation",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "@context": {
+      "items": false,
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+        {
+          "const": "http://www.w3.org/ns/anno.jsonld",
+          "type": "string"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "bbdr": {
+              "const": "urn:bb-docs:vocab:v1#",
+              "type": "string"
+            }
+          },
+          "required": [
+            "bbdr"
+          ],
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    },
+    "bbdr:schemaVersion": {
+      "pattern": "^\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "body": {
+      "additionalProperties": false,
+      "properties": {
+        "format": {
+          "const": "text/markdown",
+          "type": "string"
+        },
+        "type": {
+          "const": "TextualBody",
+          "type": "string"
+        },
+        "value": {
+          "maxLength": 1000000,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "value",
+        "format"
+      ],
+      "type": "object"
+    },
+    "created": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+      "type": "string"
+    },
+    "creator": {
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "pattern": "^mailto:[^\\s@]+@[^\\s@]+$",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 512,
+          "minLength": 1,
+          "type": "string"
+        },
+        "type": {
+          "const": "Person",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "name",
+        "email"
+      ],
+      "type": "object"
+    },
+    "id": {
+      "pattern": "^urn:bb-docs:[0-9a-f-]{36}:annotation:[0-9a-f-]{36}$",
+      "type": "string"
+    },
+    "motivation": {
+      "const": "commenting",
+      "type": "string"
+    },
+    "target": {
+      "additionalProperties": false,
+      "properties": {
+        "bbdr:docId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "bbdr:path": {
+          "type": "string"
+        },
+        "bbdr:revisionId": {
+          "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+          "type": "string"
+        },
+        "bbdr:segments": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "end": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "lineageId": {
+                "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                "type": "string"
+              },
+              "start": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "versionId": {
+                "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                "type": "string"
+              }
+            },
+            "required": [
+              "lineageId",
+              "versionId",
+              "start",
+              "end"
+            ],
+            "type": "object"
+          },
+          "maxItems": 10000,
+          "type": "array"
+        },
+        "bbdr:snapshot": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        },
+        "bbdr:sourceRanges": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "end": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "start": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "type": "object"
+          },
+          "maxItems": 10000,
+          "type": "array"
+        },
+        "bbdr:targetKind": {
+          "enum": [
+            "text",
+            "block",
+            "section",
+            "document",
+            "change"
+          ],
+          "type": "string"
+        },
+        "bbdr:tombstoneId": {
+          "pattern": "^[0-9a-f-]{36}~[0-9a-f-]{36}\\.\\d+$",
+          "type": "string"
+        },
+        "selector": {
+          "items": {
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "exact": {
+                    "maxLength": 1000000,
+                    "type": "string"
+                  },
+                  "prefix": {
+                    "maxLength": 4096,
+                    "type": "string"
+                  },
+                  "suffix": {
+                    "maxLength": 4096,
+                    "type": "string"
+                  },
+                  "type": {
+                    "const": "TextQuoteSelector",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "exact",
+                  "prefix",
+                  "suffix"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "end": {
+                    "maximum": 9007199254740991,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "start": {
+                    "maximum": 9007199254740991,
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "type": {
+                    "const": "TextPositionSelector",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "start",
+                  "end"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "type": {
+                    "const": "bbdr:KeyPathSelector",
+                    "type": "string"
+                  },
+                  "value": {
+                    "maxLength": 4096,
+                    "minLength": 2,
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "value"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "end": {
+                    "maximum": 9007199254740991,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "start": {
+                    "maximum": 9007199254740991,
+                    "minimum": 1,
+                    "type": "integer"
+                  },
+                  "type": {
+                    "const": "bbdr:LineRangeSelector",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "start",
+                  "end"
+                ],
+                "type": "object"
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "id": {
+                    "maxLength": 200,
+                    "minLength": 1,
+                    "type": "string"
+                  },
+                  "kind": {
+                    "enum": [
+                      "node",
+                      "edge",
+                      "group",
+                      "text",
+                      "other"
+                    ],
+                    "type": "string"
+                  },
+                  "label": {
+                    "maxLength": 400,
+                    "type": "string"
+                  },
+                  "range": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "end": {
+                        "maximum": 9007199254740991,
+                        "minimum": 0,
+                        "type": "integer"
+                      },
+                      "line": {
+                        "maximum": 9007199254740991,
+                        "minimum": 1,
+                        "type": "integer"
+                      },
+                      "start": {
+                        "maximum": 9007199254740991,
+                        "minimum": 0,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "line",
+                      "start",
+                      "end"
+                    ],
+                    "type": "object"
+                  },
+                  "type": {
+                    "const": "bbdr:ObjectSelector",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "id",
+                  "kind",
+                  "label"
+                ],
+                "type": "object"
+              }
+            ]
+          },
+          "maxItems": 4,
+          "type": "array"
+        },
+        "source": {
+          "pattern": "^urn:bb-docs:[0-9a-f-]{36}:doc:[0-9a-f-]{36}:rev:[0-9a-f-]{36}:proj:[a-z0-9-]+\\/\\d+$",
+          "type": "string"
+        },
+        "type": {
+          "const": "SpecificResource",
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "source",
+        "bbdr:targetKind",
+        "bbdr:docId",
+        "bbdr:revisionId",
+        "bbdr:path",
+        "bbdr:snapshot",
+        "bbdr:segments",
+        "bbdr:sourceRanges"
+      ],
+      "type": "object"
+    },
+    "type": {
+      "const": "Annotation",
+      "type": "string"
+    }
+  },
+  "required": [
+    "@context",
+    "type",
+    "id",
+    "created",
+    "creator",
+    "motivation",
+    "body",
+    "target",
+    "bbdr:schemaVersion"
+  ],
+  "title": "bb-docs annotation v1",
+  "type": "object"
+}

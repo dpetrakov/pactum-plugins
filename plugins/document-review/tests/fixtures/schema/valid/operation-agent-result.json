@@ -1,0 +1,57 @@
+{
+  "actor": {
+    "kind": "agent",
+    "model": "claude-opus-5-5",
+    "requestedBy": {
+      "email": "alice@example.com",
+      "name": "Alice"
+    },
+    "threadId": "thr_1"
+  },
+  "changes": [
+    {
+      "annotationId": "00000000-0000-4000-8000-49915e0d7d4b",
+      "itemId": "item-0123456789abcdef01234567",
+      "messageId": "00000000-0000-4000-8000-29c1b289e752",
+      "runId": "00000000-0000-4000-8000-acba25512100",
+      "text": "Done: rewrote the paragraph.",
+      "type": "message.appended"
+    },
+    {
+      "after": [
+        "00000000-0000-4000-8000-c16e48606abd"
+      ],
+      "annotationId": "00000000-0000-4000-8000-49915e0d7d4b",
+      "attemptId": "00000000-0000-4000-8000-f745a15153c4",
+      "before": [
+        "00000000-0000-4000-8000-88b082dbd8ec"
+      ],
+      "claimedEdits": [
+        {
+          "docId": "00000000-0000-4000-8000-139d544b821b",
+          "range": {
+            "end": 5,
+            "start": 0
+          },
+          "revisionId": "00000000-0000-4000-8000-c16e48606abd"
+        }
+      ],
+      "itemId": "item-0123456789abcdef01234567",
+      "messageId": "00000000-0000-4000-8000-29c1b289e752",
+      "responseId": "00000000-0000-4000-8000-d30db74ae503",
+      "runId": "00000000-0000-4000-8000-acba25512100",
+      "seenHeads": [
+        "00000000-0000-4000-8000-33112ee14ee4"
+      ],
+      "status": "done",
+      "type": "item.result-recorded"
+    }
+  ],
+  "id": "00000000-0000-4000-8000-7d3c6b8d51ac",
+  "parents": [
+    "00000000-0000-4000-8000-3946ca64ff78",
+    "00000000-0000-4000-8000-f64551fcd6f0"
+  ],
+  "schemaVersion": "1.0",
+  "timestamp": "2026-10-06T12:00:00.000Z"
+}

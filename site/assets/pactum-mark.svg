@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 2.5 140.5 140.5" width="140.5" height="140.5" role="img" aria-labelledby="title desc">
+  <title id="title">Pactum mark</title>
+  <desc id="desc">Large Pactum V03 mark: terracotta seal, italic P, and a witness dot that extends beyond the top-right corner with a cream separation ring.</desc>
+  <rect x="0" y="15" width="128" height="128" rx="16" fill="#c2503d"/>
+  <text
+    x="64"
+    y="104"
+    fill="#fff"
+    font-family="Fraunces, Georgia, 'Times New Roman', serif"
+    font-size="78"
+    font-style="italic"
+    font-weight="500"
+    text-anchor="middle">P</text>
+  <circle cx="120" cy="23" r="18" fill="#c2503d" stroke="#faf8f2" stroke-width="5"/>
+</svg>
+

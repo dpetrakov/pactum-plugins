@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -2.34 26.34 26.34" width="26.34" height="26.34" role="img" aria-labelledby="title desc">
+  <title id="title">Pactum mark 24px</title>
+  <desc id="desc">Small Pactum V03 mark for 24px favicon use. The witness dot extends beyond the top-right corner with a size-adjusted cream separation ring.</desc>
+  <rect width="24" height="24" rx="3" fill="#c2503d"/>
+  <text
+    x="12"
+    y="17"
+    fill="#fff"
+    font-family="Fraunces, Georgia, 'Times New Roman', serif"
+    font-size="15"
+    font-style="italic"
+    font-weight="500"
+    text-anchor="middle">P</text>
+  <circle cx="22.5" cy="1.5" r="3.38" fill="#c2503d" stroke="#faf8f2" stroke-width="0.94"/>
+</svg>
+

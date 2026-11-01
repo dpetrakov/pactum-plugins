@@ -1,0 +1,52 @@
+{
+  "@context": [
+    "http://www.w3.org/ns/anno.jsonld",
+    {
+      "bbdr": "urn:bb-docs:vocab:v1#"
+    }
+  ],
+  "bbdr:schemaVersion": "1.0",
+  "body": {
+    "format": "text/markdown",
+    "type": "TextualBody",
+    "value": "Fix this"
+  },
+  "created": "2026-10-06T12:00:00.000Z",
+  "creator": {
+    "email": "mailto:alice@example.com",
+    "name": "Alice",
+    "type": "Person"
+  },
+  "id": "urn:bb-docs:00000000-0000-4000-8000-071ca2227754:annotation:00000000-0000-4000-8000-49915e0d7d4b",
+  "motivation": "commenting",
+  "target": {
+    "bbdr:docId": "00000000-0000-4000-8000-139d544b821b",
+    "bbdr:path": "docs/a.md",
+    "bbdr:revisionId": "00000000-0000-4000-8000-88b082dbd8ec",
+    "bbdr:segments": [],
+    "bbdr:snapshot": "66a045b452102c59d840ec097d59d9467e13a3f34f6494e539ffd32c1bb35f18",
+    "bbdr:sourceRanges": [
+      {
+        "end": 5,
+        "start": 0
+      }
+    ],
+    "bbdr:targetKind": "text",
+    "selector": [
+      {
+        "exact": "quote",
+        "prefix": "",
+        "suffix": "",
+        "type": "TextQuoteSelector"
+      },
+      {
+        "end": 5,
+        "start": 0,
+        "type": "TextPositionSelector"
+      }
+    ],
+    "source": "urn:bb-docs:00000000-0000-4000-8000-071ca2227754:doc:00000000-0000-4000-8000-139d544b821b:rev:00000000-0000-4000-8000-88b082dbd8ec:proj:bbdr-markdown/1",
+    "type": "SpecificResource"
+  },
+  "type": "Annotation"
+}

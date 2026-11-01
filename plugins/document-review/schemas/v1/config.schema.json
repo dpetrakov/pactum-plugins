@@ -1,0 +1,114 @@
+{
+  "$id": "urn:bb-docs:vocab:v1#schema/config",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "exclude": {
+      "items": {
+        "maxLength": 4096,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "hidden": {
+      "items": {
+        "maxLength": 4096,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "repoId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "roots": {
+      "items": {
+        "anyOf": [
+          {
+            "const": ".",
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "maxItems": 256,
+      "minItems": 1,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "pattern": "^\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "secretExemptions": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "keyPath": {
+            "maxLength": 4096,
+            "minLength": 2,
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "keyPath"
+        ],
+        "type": "object"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "secretKeys": {
+      "items": {
+        "maxLength": 512,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "types": {
+      "items": {
+        "enum": [
+          "markdown",
+          "yaml",
+          "json",
+          "toml",
+          "dotenv",
+          "text",
+          "csv"
+        ],
+        "type": "string"
+      },
+      "maxItems": 16,
+      "type": "array"
+    },
+    "untracked": {
+      "items": {
+        "maxLength": 4096,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "repoId",
+    "roots",
+    "hidden",
+    "untracked"
+  ],
+  "title": "bb-docs config v1",
+  "type": "object"
+}

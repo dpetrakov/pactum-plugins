@@ -1,0 +1,53 @@
+@font-face{font-family:'Fraunces';font-style:italic;font-weight:100 900;font-display:swap;src:url('./assets/fonts/fraunces-italic.ttf') format('truetype')}
+@font-face{font-family:'Fraunces';font-style:normal;font-weight:100 900;font-display:swap;src:url('./assets/fonts/fraunces.ttf') format('truetype')}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;font-display:swap;src:url('./assets/fonts/inter.ttf') format('truetype')}
+@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:100 900;font-display:swap;src:url('./assets/fonts/jetbrainsmono.ttf') format('truetype')}
+/* Trinity palette reused from the original Pactum landing. */
+      :root {
+        
+        --bg: #faf8f2;
+        --surface: #fffdfa;
+        --surface-soft: #f5f1e6;
+        --ink: #1a1814;
+        --ink-soft: #5a554b;
+        --ink-muted: #6e6a5e;
+        --hairline: #e8e2d4;
+        --hairline-soft: #f0ebe0;
+        --terracotta: #c2503d;
+        --terracotta-dark: #9d392a;
+        --terracotta-soft: #f4dbd3;
+        --sage: #5c7a5e;
+        --sage-soft: #dce8dd;
+        --warning: #b6862c;
+        --pill-bg: #ffffff;
+        --shadow-rgb: 26, 24, 20;
+        --font-serif: Fraunces, Georgia, "Times New Roman", serif;
+        --font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        --shadow: 0 18px 60px rgba(26, 24, 20, 0.08), 0 2px 8px rgba(26, 24, 20, 0.04);
+      }
+
+      
+      :root.dark {
+        --bg: #15151b;
+        --surface: #1f1f26;
+        --surface-soft: #2a2a33;
+        --ink: #f2f2f4;
+        --ink-soft: #9ca0a8;
+        --ink-muted: #9ca0a8;
+        --hairline: #2c2c36;
+        --hairline-soft: #242430;
+        --terracotta: #db6e58;
+        --terracotta-dark: #c2503d;
+        --terracotta-soft: #2a1a14;
+        --sage: #7a9a7d;
+        --sage-soft: #1f2820;
+        --pill-bg: #34343f;
+        --shadow-rgb: 0, 0, 0;
+        --shadow: 0 18px 60px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.25);
+      }
+
+
+:root{--background:var(--bg);--foreground:var(--ink);--muted-foreground:var(--ink-muted);--surface-recessed:var(--surface-soft);--border:var(--hairline);--border-hairline:var(--hairline-soft);--ring:var(--terracotta);--state-hover:var(--surface-soft);--warning-text:var(--terracotta);--diff-added:var(--sage);--diff-removed:var(--terracotta);--destructive:var(--terracotta);--success:var(--sage);--radius:8px;--shadow-lg:var(--shadow);--brand-action:var(--terracotta);--on-brand:#fff}
+:root.dark{--brand-action:var(--terracotta-dark)}
+:root{--brand-label:var(--terracotta-dark)}:root.dark{--brand-label:var(--terracotta)}

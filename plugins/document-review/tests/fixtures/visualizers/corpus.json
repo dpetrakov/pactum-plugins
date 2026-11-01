@@ -1,0 +1,37 @@
+{
+  "$comment": "Security corpus of the docs visualizers contract (W-06f, EP-073-T06). Every visualizer of the repository runs `sources` through its parser/renderer and must never turn them into markup (tags in labels are dropped or shown as text, never rendered); the host's sanitiser and audit are checked with `svg` and `dom`. See docs/plugins/document-review/visualizers-contract.md «Безопасность».",
+  "sources": [
+    { "name": "html in a label", "language": "mermaid", "text": "flowchart LR\n  A[<img src=x onerror=alert(1)>] --> B", "mustNotContain": "<", "warning": "html-label" },
+    { "name": "script in a label", "language": "mermaid", "text": "flowchart LR\n  A[\"<script>alert(1)</script>\"] --> B", "mustNotContain": "<", "warning": "html-label" },
+    { "name": "click callback", "language": "mermaid", "text": "flowchart LR\n  A --> B\n  click A callback \"tip\"", "warning": "click" },
+    { "name": "click javascript link", "language": "mermaid", "text": "flowchart LR\n  A --> B\n  click A \"javascript:alert(1)\"", "warning": "click" },
+    { "name": "click external link", "language": "mermaid", "text": "flowchart LR\n  A --> B\n  click A href \"https://evil.example/\" _blank", "warning": "click" },
+    { "name": "init directive", "language": "mermaid", "text": "%%{init: {\"securityLevel\": \"loose\", \"theme\": \"forest\"}}%%\nflowchart LR\n  A --> B", "warning": "directive" },
+    { "name": "style with url", "language": "mermaid", "text": "flowchart LR\n  A --> B\n  style A fill:url(https://evil.example/x.svg)", "warning": "style" },
+    { "name": "classDef and class", "language": "mermaid", "text": "flowchart LR\n  A --> B\n  classDef bad fill:#f00\n  class A bad", "warning": "style" },
+    { "name": "entity in a label", "language": "mermaid", "text": "flowchart LR\n  A[\"#lt;b#gt;x#lt;/b#gt;\"] --> B", "mustContain": "#lt;b#gt;x#lt;/b#gt;" },
+    { "name": "markdown-ish label", "language": "mermaid", "text": "flowchart LR\n  A[\"`**bold** [link](javascript:alert(1))`\"] --> B", "mustContain": "javascript:alert(1)" }
+  ],
+  "svg": [
+    { "name": "script element", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 10 10\"><script>alert(1)</script><rect width=\"1\" height=\"1\"/></svg>", "removed": ["<script>"], "kept": ["rect"] },
+    { "name": "foreignObject with html", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\"><foreignObject><div xmlns=\"http://www.w3.org/1999/xhtml\" onclick=\"alert(1)\">x</div></foreignObject><circle r=\"1\"/></svg>", "removed": ["<foreignObject>"], "kept": ["circle"] },
+    { "name": "event handler attribute", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\"><rect width=\"1\" height=\"1\" onclick=\"alert(1)\" onmouseover=\"x()\"/></svg>", "removed": ["rect@onclick", "rect@onmouseover"], "kept": ["rect"] },
+    { "name": "javascript href", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"><a href=\"javascript:alert(1)\"><text>x</text></a></svg>", "removed": ["<a>"], "kept": [] },
+    { "name": "external image", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\"><image href=\"https://evil.example/t.png\" width=\"1\" height=\"1\"/><rect width=\"1\" height=\"1\"/></svg>", "removed": ["<image>"], "kept": ["rect"] },
+    { "name": "use of an external document", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\"><use href=\"https://evil.example/s.svg#x\"/><use href=\"#ok\"/></svg>", "removed": ["use@href"], "kept": ["use"] },
+    { "name": "style attribute with external url", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\"><rect style=\"fill:url(https://evil.example/p.svg#p)\" width=\"1\" height=\"1\"/></svg>", "removed": ["rect@style"], "kept": ["rect"] },
+    { "name": "fill url to a fragment is fine", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\"><defs><linearGradient id=\"g\"><stop offset=\"0\"/></linearGradient></defs><rect fill=\"url(#g)\" width=\"1\" height=\"1\" data-vis-id=\"A\"/></svg>", "removed": [], "kept": ["rect", "linearGradient"] },
+    { "name": "iframe and object", "markup": "<svg xmlns=\"http://www.w3.org/2000/svg\"><iframe src=\"https://evil.example\"></iframe><object data=\"x\"></object><g><path d=\"M0 0\"/></g></svg>", "removed": ["<iframe>", "<object>"], "kept": ["path"] },
+    { "name": "not an svg", "markup": "<div>hello</div>", "null": true }
+  ],
+  "dom": [
+    { "name": "script injected", "html": "<div><script>alert(1)</script><p>x</p></div>", "found": ["<script>"] },
+    { "name": "iframe injected", "html": "<iframe srcdoc=\"<script>alert(1)</script>\"></iframe>", "found": ["<iframe>"] },
+    { "name": "inline handler", "html": "<svg><g onclick=\"alert(1)\"><rect/></g></svg>", "found": ["g@onclick"] },
+    { "name": "javascript link", "html": "<svg><a href=\"javascript:alert(1)\"><text>x</text></a></svg>", "found": ["a@href"] },
+    { "name": "external link", "html": "<svg><a href=\"https://evil.example/\"><text>x</text></a></svg>", "found": ["a@href"] },
+    { "name": "external image", "html": "<svg><image href=\"https://evil.example/t.png\"/></svg>", "found": ["<image> external"] },
+    { "name": "style url external", "html": "<svg><rect style=\"fill:url(https://evil.example/p.svg#p)\"/></svg>", "found": ["rect@style"] },
+    { "name": "clean canvas", "html": "<svg><g class=\"dr-dg__node\" data-node=\"A\"><rect fill=\"url(#g)\"/><text>A</text></g><use href=\"#m\"/></svg>", "found": [] }
+  ]
+}

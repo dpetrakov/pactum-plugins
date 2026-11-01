@@ -1,0 +1,67 @@
+/* Shared visual feedback using bb theme tokens only. Data attributes select busy commands, loading rows, background loading rails and dimmed transitions; feedback.ts owns timing. */
+@layer components {
+  /* Spinner and button icon share a cell of fixed width. */
+  .fb-ico { display: inline-grid; place-items: center; flex: none; }
+  .fb-ico > * { grid-area: 1 / 1; }
+  .fb-ico > .fb-spin { visibility: hidden; }
+  [data-fb-busy] .fb-ico > :not(.fb-spin) { visibility: hidden; }
+  [data-fb-busy] .fb-ico > .fb-spin { visibility: visible; }
+  /* An iconless button retains its label width while a centered spinner replaces the label. */
+  :where(button, [role="button"], a):has(> .fb-over) { position: relative; }
+  .fb-over { position: absolute; inset: 0; display: grid; place-items: center; visibility: hidden; pointer-events: none; }
+  [data-fb-busy] > .fb-over { visibility: visible; }
+  [data-fb-busy]:has(> .fb-over) > :not(.fb-over) { color: transparent; }
+  [data-fb-busy] { cursor: progress; }
+  .fb-spin { animation: fb-spin 900ms linear infinite; }
+  .fb-ico > .fb-spin:not(:is([data-fb-busy] *)) { animation: none; }
+
+  /* Opening rows and background loading use a 2 px rail. Animate transforms on the compositor rather than repainting backgrounds; clip overflow only while busy. */
+  [data-fb-row-busy], [data-fb-seam-busy] { position: relative; overflow-x: clip; }
+  [data-fb-row-busy]::after, [data-fb-seam-busy]::after {
+    content: ""; position: absolute; left: 0; bottom: 0; width: 33%; height: 2px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, color-mix(in oklab, var(--foreground) 60%, transparent), transparent);
+    animation: fb-run 1100ms cubic-bezier(.65, 0, .35, 1) infinite; will-change: transform;
+  }
+
+  /* Keep old content visible while switching objects. A transparent overlay intercepts input; avoid inherited pointer-events or user-select on large trees because they trigger expensive subtree style recalculation. */
+  [data-fb-dim] { position: relative; opacity: .6; transition: opacity 140ms cubic-bezier(.2, .9, .1, 1); }
+  [data-fb-dim]::after { content: ""; position: absolute; inset: 0; z-index: 2; cursor: progress; }
+
+  /* Skeleton shaped like the expected result. */
+  .fb-skel { display: block; height: 10px; border-radius: 4px; background: var(--muted); animation: fb-pulse 1400ms ease-in-out infinite; }
+  .fb-skel-list { display: grid; gap: 10px; padding: 8px 10px; }
+
+  /* Long-operation count, progress rail and cancellation. */
+  .fb-progress { position: relative; display: flex; align-items: center; gap: 10px; min-height: 32px; padding: 4px 8px 6px;
+    font-size: 12px; color: var(--muted-foreground); border-bottom: 1px solid var(--border-hairline); }
+  .fb-progress b { color: var(--foreground); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .fb-progress .fb-grow { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .fb-progress .fb-bar { position: absolute; left: 0; bottom: -1px; height: 2px; background: var(--foreground); transition: width 200ms cubic-bezier(.65, 0, .35, 1); }
+
+  /* Inline errors and stale-data notices. */
+  .fb-error { display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 6px 8px; border-radius: 6px;
+    background: var(--surface-destructive); color: var(--foreground); font-size: 12px; }
+  .fb-error > svg { color: var(--destructive-text); flex: none; }
+  .fb-error .fb-grow { flex: 1; min-width: 0; }
+  .fb-stale { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: var(--muted-foreground); }
+
+  /* Fallback feedback button for consumers without their own button component. */
+  .fb-btn { display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 8px; border-radius: 6px; font: 500 12px/1 var(--font-sans);
+    color: var(--foreground); background: var(--background); border: 1px solid var(--border); cursor: pointer; white-space: nowrap; }
+  @media (hover: hover) { .fb-btn:hover { background: var(--state-hover); } }
+  .fb-btn:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+  @media (pointer: coarse) { .fb-btn { height: 40px; padding: 0 12px; } }
+
+  @keyframes fb-spin { to { transform: rotate(360deg); } }
+  @keyframes fb-run { from { transform: translateX(-100%); } to { transform: translateX(300%); } }
+  @keyframes fb-pulse { 50% { opacity: .5; } }
+
+  /* Reduced motion disables rotation and sliding; opacity pulsing remains available. fb-rm is an explicit preview override. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-fb-busy] .fb-spin, .fb-spin { animation: fb-pulse 1200ms ease-in-out infinite; }
+    [data-fb-row-busy]::after, [data-fb-seam-busy]::after { animation: none; width: 100%; opacity: .35; }
+    [data-fb-dim] { transition: none; }
+  }
+  .fb-rm [data-fb-busy] .fb-spin, .fb-rm .fb-spin { animation: fb-pulse 1200ms ease-in-out infinite; }
+  .fb-rm [data-fb-row-busy]::after, .fb-rm [data-fb-seam-busy]::after { animation: none; width: 100%; opacity: .35; }
+}

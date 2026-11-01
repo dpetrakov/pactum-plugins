@@ -1,0 +1,35 @@
+{
+  "$schema": "https://getbb.app/schemas/marketplace.schema.json",
+  "schemaVersion": 1,
+  "name": "pactum",
+  "displayName": "Pactum",
+  "description": "Open-source document review with AI agents.",
+  "plugins": [
+    {
+      "id": "document-review",
+      "displayName": "Pactum Docs",
+      "description": "Review documents with AI agents: unread changes, inline comments and explicit review rounds.",
+      "icon": {
+        "url": "./icon.svg"
+      },
+      "tags": [
+        "documents",
+        "review",
+        "agents"
+      ],
+      "author": {
+        "name": "Dmitry Petrakov",
+        "github": "dpetrakov",
+        "url": "https://pactum.work"
+      },
+      "source": {
+        "git": {
+          "url": "https://github.com/dpetrakov/pactum-plugins.git",
+          "subdir": "plugins/document-review",
+          "range": "^1.13.0",
+          "tagPrefix": "document-review-"
+        }
+      }
+    }
+  ]
+}

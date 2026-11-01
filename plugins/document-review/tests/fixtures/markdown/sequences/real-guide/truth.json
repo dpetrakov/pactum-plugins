@@ -1,0 +1,28 @@
+{
+  "steps": {
+    "a>b": {
+      "map": [
+        [
+          "Write a clear instruction",
+          [
+            "Write a precise instruction"
+          ]
+        ],
+        [
+          "Text size",
+          [
+            "Text size",
+            "The preference"
+          ]
+        ],
+        [
+          "Delete a comment",
+          []
+        ]
+      ]
+    },
+    "b>c": {
+      "map": []
+    }
+  }
+}

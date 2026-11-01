@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" role="img" aria-labelledby="title desc">
+  <title id="title">Pactum mark 16px</title>
+  <desc id="desc">Small Pactum V03 mark for 16px favicon use. The witness dot is intentionally omitted because it collapses at this size.</desc>
+  <rect width="16" height="16" rx="2" fill="#c2503d"/>
+  <text
+    x="8"
+    y="12"
+    fill="#fff"
+    font-family="Fraunces, Georgia, 'Times New Roman', serif"
+    font-size="10"
+    font-style="italic"
+    font-weight="500"
+    text-anchor="middle">P</text>
+</svg>
+

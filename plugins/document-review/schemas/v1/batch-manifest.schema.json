@@ -1,0 +1,179 @@
+{
+  "$id": "urn:bb-docs:vocab:v1#schema/batch-manifest",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "documents": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "docId": {
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "revisionId": {
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "docId",
+          "path",
+          "revisionId"
+        ],
+        "type": "object"
+      },
+      "maxItems": 100000,
+      "type": "array"
+    },
+    "editScope": {
+      "items": {
+        "anyOf": [
+          {
+            "const": ".",
+            "type": "string"
+          },
+          {
+            "type": "string"
+          }
+        ]
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "items": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "annotationId": {
+            "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+            "type": "string"
+          },
+          "itemId": {
+            "maxLength": 64,
+            "minLength": 1,
+            "type": "string"
+          },
+          "seenHeads": {
+            "items": {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            "maxItems": 256,
+            "minItems": 1,
+            "type": "array"
+          }
+        },
+        "required": [
+          "itemId",
+          "annotationId",
+          "seenHeads"
+        ],
+        "type": "object"
+      },
+      "maxItems": 10000,
+      "type": "array"
+    },
+    "requestedBy": {
+      "additionalProperties": false,
+      "properties": {
+        "email": {
+          "maxLength": 320,
+          "minLength": 3,
+          "pattern": "^[^\\s@]+@[^\\s@]+$",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 512,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "email"
+      ],
+      "type": "object"
+    },
+    "runId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "pattern": "^\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "scope": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "docId": {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            "kind": {
+              "const": "document",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "docId"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "all",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "annotationId": {
+              "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+              "type": "string"
+            },
+            "kind": {
+              "const": "annotation",
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "annotationId"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "type": {
+      "const": "BatchManifest",
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "schemaVersion",
+    "runId",
+    "scope",
+    "editScope",
+    "documents",
+    "items",
+    "requestedBy"
+  ],
+  "title": "bb-docs batch-manifest v1",
+  "type": "object"
+}

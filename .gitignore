@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.bb-docs/
+.env
+.env.*
+!.env.example
+.DS_Store
+playwright-report/
+test-results/
+.coverage/
+.qa/

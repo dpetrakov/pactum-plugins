@@ -1,0 +1,31 @@
+{
+  "actor": {
+    "email": "alice@example.com",
+    "kind": "human",
+    "name": "Alice"
+  },
+  "changes": [
+    {
+      "docId": "00000000-0000-4000-8000-139d544b821b",
+      "readerId": "alice@example.com",
+      "receiptId": "00000000-0000-4000-8000-82f3e9c695dc",
+      "revisionId": "00000000-0000-4000-8000-88b082dbd8ec",
+      "scope": "section",
+      "tombstones": [],
+      "type": "read.acknowledged",
+      "versions": [
+        {
+          "lineageId": "00000000-0000-4000-8000-88b082dbd8ec.0",
+          "versionId": "00000000-0000-4000-8000-88b082dbd8ec.0"
+        }
+      ]
+    }
+  ],
+  "id": "00000000-0000-4000-8000-7d3c6b8d51ac",
+  "parents": [
+    "00000000-0000-4000-8000-3946ca64ff78",
+    "00000000-0000-4000-8000-f64551fcd6f0"
+  ],
+  "schemaVersion": "1.0",
+  "timestamp": "2026-10-06T12:00:00.000Z"
+}

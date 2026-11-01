@@ -1,0 +1,1129 @@
+{
+  "$id": "urn:bb-docs:vocab:v1#schema/operation",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "actor": {
+      "oneOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "email": {
+              "maxLength": 320,
+              "minLength": 3,
+              "pattern": "^[^\\s@]+@[^\\s@]+$",
+              "type": "string"
+            },
+            "kind": {
+              "const": "human",
+              "type": "string"
+            },
+            "name": {
+              "maxLength": 512,
+              "minLength": 1,
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "name",
+            "email"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "const": "agent",
+              "type": "string"
+            },
+            "model": {
+              "maxLength": 256,
+              "minLength": 1,
+              "type": "string"
+            },
+            "requestedBy": {
+              "additionalProperties": false,
+              "properties": {
+                "email": {
+                  "maxLength": 320,
+                  "minLength": 3,
+                  "pattern": "^[^\\s@]+@[^\\s@]+$",
+                  "type": "string"
+                },
+                "name": {
+                  "maxLength": 512,
+                  "minLength": 1,
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "email"
+              ],
+              "type": "object"
+            },
+            "threadId": {
+              "anyOf": [
+                {
+                  "maxLength": 256,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "model",
+            "threadId",
+            "requestedBy"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "changes": {
+      "items": {
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "properties": {
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "const": "document.registered",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "docId",
+              "path"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "from": {
+                "type": "string"
+              },
+              "to": {
+                "type": "string"
+              },
+              "type": {
+                "const": "document.moved",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "docId",
+              "from",
+              "to"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "path": {
+                "type": "string"
+              },
+              "type": {
+                "const": "document.removed",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "docId",
+              "path"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "direction": {
+                "enum": [
+                  "to-git",
+                  "to-local"
+                ],
+                "type": "string"
+              },
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "document.transferred",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "docId",
+              "direction"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "reason": {
+                "enum": [
+                  "baseline",
+                  "tracking-resumed",
+                  "reference",
+                  "batch-input",
+                  "batch-output",
+                  "reconcile"
+                ],
+                "type": "string"
+              },
+              "revision": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "revisionId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "document.observed",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "docId",
+              "revisionId",
+              "revision",
+              "reason"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotation": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "action",
+                  "note"
+                ],
+                "type": "string"
+              },
+              "messageId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "annotation.created",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId",
+              "docId",
+              "annotation",
+              "kind",
+              "messageId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "annotation.withdrawn",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "annotation.restored",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "kind": {
+                "enum": [
+                  "action",
+                  "note"
+                ],
+                "type": "string"
+              },
+              "type": {
+                "const": "annotation.kind-changed",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId",
+              "kind"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "revisionId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "target": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "annotation.reanchored",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId",
+              "revisionId",
+              "target"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "resolution": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "revisionId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "anchor.resolved",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId",
+              "revisionId",
+              "resolution"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "itemId": {
+                "maxLength": 64,
+                "type": "string"
+              },
+              "messageId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "runId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "text": {
+                "maxLength": 1000000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": {
+                "const": "message.appended",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId",
+              "messageId",
+              "text"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "messageId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "text": {
+                "maxLength": 1000000,
+                "minLength": 1,
+                "type": "string"
+              },
+              "type": {
+                "const": "message.revised",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId",
+              "messageId",
+              "text"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "discussion.closed",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "discussion.reopened",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "discussion.retry-requested",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "field": {
+                "enum": [
+                  "status",
+                  "kind",
+                  "message"
+                ],
+                "type": "string"
+              },
+              "messageId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "resolves": {
+                "items": {
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                  "type": "string"
+                },
+                "maxItems": 64,
+                "minItems": 2,
+                "type": "array"
+              },
+              "type": {
+                "const": "conflict.resolved",
+                "type": "string"
+              },
+              "value": {
+                "maxLength": 1000000,
+                "minLength": 1,
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "annotationId",
+              "field",
+              "value",
+              "resolves"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "readerId": {
+                "maxLength": 320,
+                "minLength": 3,
+                "pattern": "^[^\\s@]+@[^\\s@]+$",
+                "type": "string"
+              },
+              "receiptId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "revisionId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "scope": {
+                "enum": [
+                  "block",
+                  "section",
+                  "document",
+                  "repo",
+                  "accept",
+                  "removal"
+                ],
+                "type": "string"
+              },
+              "tombstones": {
+                "items": {
+                  "pattern": "^[0-9a-f-]{36}~[0-9a-f-]{36}\\.\\d+$",
+                  "type": "string"
+                },
+                "maxItems": 100000,
+                "type": "array"
+              },
+              "type": {
+                "const": "read.acknowledged",
+                "type": "string"
+              },
+              "versions": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "lineageId": {
+                      "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                      "type": "string"
+                    },
+                    "versionId": {
+                      "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "lineageId",
+                    "versionId"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 100000,
+                "type": "array"
+              }
+            },
+            "required": [
+              "type",
+              "receiptId",
+              "readerId",
+              "docId",
+              "revisionId",
+              "scope",
+              "versions",
+              "tombstones"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "readerId": {
+                "maxLength": 320,
+                "minLength": 3,
+                "pattern": "^[^\\s@]+@[^\\s@]+$",
+                "type": "string"
+              },
+              "receiptId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "read.revoked",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "receiptId",
+              "readerId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "items": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "annotationId": {
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "type": "string"
+                    },
+                    "itemId": {
+                      "maxLength": 64,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "seenHeads": {
+                      "items": {
+                        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                        "type": "string"
+                      },
+                      "maxItems": 256,
+                      "minItems": 1,
+                      "type": "array"
+                    }
+                  },
+                  "required": [
+                    "itemId",
+                    "annotationId",
+                    "seenHeads"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 10000,
+                "minItems": 1,
+                "type": "array"
+              },
+              "manifest": {
+                "pattern": "^[0-9a-f]{64}$",
+                "type": "string"
+              },
+              "runId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "batch.prepared",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "runId",
+              "manifest",
+              "items"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "attemptId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "recipient": {
+                "additionalProperties": false,
+                "properties": {
+                  "mode": {
+                    "enum": [
+                      "current-thread",
+                      "new-thread"
+                    ],
+                    "type": "string"
+                  },
+                  "threadId": {
+                    "anyOf": [
+                      {
+                        "maxLength": 256,
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "mode",
+                  "threadId"
+                ],
+                "type": "object"
+              },
+              "runId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "batch.dispatched",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "runId",
+              "attemptId",
+              "recipient"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "docId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "revisionId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "runId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "batch.input-registered",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "runId",
+              "docId",
+              "revisionId"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "items": {
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                  "type": "string"
+                },
+                "maxItems": 1024,
+                "type": "array"
+              },
+              "annotationId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "attemptId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "before": {
+                "items": {
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                  "type": "string"
+                },
+                "maxItems": 1024,
+                "type": "array"
+              },
+              "claimedEdits": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "docId": {
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "type": "string"
+                    },
+                    "range": {
+                      "additionalProperties": false,
+                      "properties": {
+                        "end": {
+                          "maximum": 9007199254740991,
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "start": {
+                          "maximum": 9007199254740991,
+                          "minimum": 0,
+                          "type": "integer"
+                        }
+                      },
+                      "required": [
+                        "start",
+                        "end"
+                      ],
+                      "type": "object"
+                    },
+                    "revisionId": {
+                      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "docId",
+                    "revisionId",
+                    "range"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 1024,
+                "type": "array"
+              },
+              "itemId": {
+                "maxLength": 64,
+                "minLength": 1,
+                "type": "string"
+              },
+              "messageId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "responseId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "runId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "seenHeads": {
+                "items": {
+                  "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                  "type": "string"
+                },
+                "maxItems": 256,
+                "minItems": 1,
+                "type": "array"
+              },
+              "status": {
+                "enum": [
+                  "done",
+                  "needs-input",
+                  "failed",
+                  "skipped"
+                ],
+                "type": "string"
+              },
+              "type": {
+                "const": "item.result-recorded",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "runId",
+              "attemptId",
+              "itemId",
+              "responseId",
+              "annotationId",
+              "status",
+              "seenHeads",
+              "messageId",
+              "before",
+              "after",
+              "claimedEdits"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "attemptId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "outcome": {
+                "enum": [
+                  "completed",
+                  "partial",
+                  "failed",
+                  "cancelled"
+                ],
+                "type": "string"
+              },
+              "runId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "type": {
+                "const": "batch.finished",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "runId",
+              "attemptId",
+              "outcome"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "engine": {
+                "maxLength": 64,
+                "minLength": 1,
+                "type": "string"
+              },
+              "nodes": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": {
+                      "maxLength": 200,
+                      "minLength": 1,
+                      "type": "string"
+                    },
+                    "x": {
+                      "maximum": 100000,
+                      "minimum": -100000,
+                      "type": "integer"
+                    },
+                    "y": {
+                      "maximum": 100000,
+                      "minimum": -100000,
+                      "type": "integer"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "x",
+                    "y"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 200,
+                "minItems": 1,
+                "type": "array"
+              },
+              "revisionId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "scope": {
+                "additionalProperties": false,
+                "properties": {
+                  "doc": {
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "type": "string"
+                  },
+                  "lineage": {
+                    "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                    "type": "string"
+                  },
+                  "reader": {
+                    "maxLength": 320,
+                    "minLength": 3,
+                    "pattern": "^[^\\s@]+@[^\\s@]+$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "doc",
+                  "lineage",
+                  "reader"
+                ],
+                "type": "object"
+              },
+              "type": {
+                "const": "layout.pinned",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "scope",
+              "revisionId",
+              "engine",
+              "nodes"
+            ],
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "nodes": {
+                "items": {
+                  "maxLength": 200,
+                  "minLength": 1,
+                  "type": "string"
+                },
+                "maxItems": 400,
+                "minItems": 1,
+                "type": "array"
+              },
+              "revisionId": {
+                "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                "type": "string"
+              },
+              "scope": {
+                "additionalProperties": false,
+                "properties": {
+                  "doc": {
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "type": "string"
+                  },
+                  "lineage": {
+                    "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                    "type": "string"
+                  },
+                  "reader": {
+                    "maxLength": 320,
+                    "minLength": 3,
+                    "pattern": "^[^\\s@]+@[^\\s@]+$",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "doc",
+                  "lineage",
+                  "reader"
+                ],
+                "type": "object"
+              },
+              "type": {
+                "const": "layout.unpinned",
+                "type": "string"
+              }
+            },
+            "required": [
+              "type",
+              "scope",
+              "revisionId",
+              "nodes"
+            ],
+            "type": "object"
+          }
+        ]
+      },
+      "maxItems": 1024,
+      "minItems": 1,
+      "type": "array"
+    },
+    "id": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "parents": {
+      "items": {
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "type": "string"
+      },
+      "maxItems": 4096,
+      "type": "array"
+    },
+    "schemaVersion": {
+      "pattern": "^\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "timestamp": {
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "actor",
+    "timestamp",
+    "parents",
+    "changes"
+  ],
+  "title": "bb-docs operation v1",
+  "type": "object"
+}

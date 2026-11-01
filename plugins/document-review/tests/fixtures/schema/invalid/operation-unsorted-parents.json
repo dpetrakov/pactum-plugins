@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0",
+  "id": "00000000-0000-4000-8000-7d3c6b8d51ac",
+  "actor": {
+    "kind": "human",
+    "name": "Alice",
+    "email": "alice@example.com"
+  },
+  "timestamp": "2026-10-06T12:00:00.000Z",
+  "parents": [
+    "00000000-0000-4000-8000-f64551fcd6f0",
+    "00000000-0000-4000-8000-3946ca64ff78"
+  ],
+  "changes": [
+    {
+      "type": "discussion.closed",
+      "annotationId": "00000000-0000-4000-8000-49915e0d7d4b"
+    }
+  ]
+}

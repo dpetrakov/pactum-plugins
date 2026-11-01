@@ -1,0 +1,146 @@
+{
+  "$id": "urn:bb-docs:vocab:v1#schema/anchor-resolution",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "annotationId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "candidates": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "evidence": {
+            "items": {
+              "maxLength": 256,
+              "type": "string"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "range": {
+            "additionalProperties": false,
+            "properties": {
+              "end": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "start": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "type": "object"
+          },
+          "rank": {
+            "maximum": 1000,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "range",
+          "rank",
+          "evidence"
+        ],
+        "type": "object"
+      },
+      "maxItems": 32,
+      "type": "array"
+    },
+    "evidence": {
+      "items": {
+        "maxLength": 256,
+        "type": "string"
+      },
+      "maxItems": 256,
+      "type": "array"
+    },
+    "place": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "lineageId": {
+              "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+              "type": "string"
+            }
+          },
+          "required": [
+            "lineageId"
+          ],
+          "type": "object"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "ranges": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "end": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          },
+          "start": {
+            "maximum": 9007199254740991,
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "required": [
+          "start",
+          "end"
+        ],
+        "type": "object"
+      },
+      "maxItems": 10000,
+      "type": "array"
+    },
+    "revisionId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "pattern": "^\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "exact",
+        "mapped",
+        "approximate",
+        "ambiguous",
+        "orphaned"
+      ],
+      "type": "string"
+    },
+    "type": {
+      "const": "AnchorResolution",
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "schemaVersion",
+    "annotationId",
+    "revisionId",
+    "status",
+    "ranges",
+    "place",
+    "evidence",
+    "candidates"
+  ],
+  "title": "bb-docs anchor-resolution v1",
+  "type": "object"
+}

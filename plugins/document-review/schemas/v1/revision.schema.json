@@ -1,0 +1,347 @@
+{
+  "$id": "urn:bb-docs:vocab:v1#schema/revision",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "blocks": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "headings": {
+            "items": {
+              "maximum": 9007199254740991,
+              "minimum": 0,
+              "type": "integer"
+            },
+            "maxItems": 64,
+            "type": "array"
+          },
+          "lineageId": {
+            "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+            "type": "string"
+          },
+          "origin": {
+            "additionalProperties": false,
+            "properties": {
+              "kind": {
+                "enum": [
+                  "split",
+                  "merge"
+                ],
+                "type": "string"
+              },
+              "sources": {
+                "items": {
+                  "additionalProperties": false,
+                  "properties": {
+                    "lineageId": {
+                      "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                      "type": "string"
+                    },
+                    "versionId": {
+                      "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "lineageId",
+                    "versionId"
+                  ],
+                  "type": "object"
+                },
+                "maxItems": 64,
+                "minItems": 1,
+                "type": "array"
+              }
+            },
+            "required": [
+              "kind",
+              "sources"
+            ],
+            "type": "object"
+          },
+          "range": {
+            "additionalProperties": false,
+            "properties": {
+              "end": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "start": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "type": "object"
+          },
+          "semanticHash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "source": {
+            "additionalProperties": false,
+            "properties": {
+              "end": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              },
+              "start": {
+                "maximum": 9007199254740991,
+                "minimum": 0,
+                "type": "integer"
+              }
+            },
+            "required": [
+              "start",
+              "end"
+            ],
+            "type": "object"
+          },
+          "textHash": {
+            "pattern": "^[0-9a-f]{64}$",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "heading",
+              "paragraph",
+              "listItem",
+              "tableCell",
+              "code",
+              "image",
+              "thematicBreak",
+              "html",
+              "frontmatter",
+              "footnoteDefinition",
+              "definition",
+              "node",
+              "group",
+              "line"
+            ],
+            "type": "string"
+          },
+          "versionId": {
+            "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "lineageId",
+          "versionId",
+          "type",
+          "range",
+          "source",
+          "semanticHash",
+          "textHash",
+          "headings"
+        ],
+        "type": "object"
+      },
+      "maxItems": 200000,
+      "type": "array"
+    },
+    "docId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "parents": {
+      "items": {
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "type": "string"
+      },
+      "maxItems": 64,
+      "type": "array"
+    },
+    "parser": {
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        },
+        "version": {
+          "maxLength": 256,
+          "minLength": 1,
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "version"
+      ],
+      "type": "object"
+    },
+    "path": {
+      "type": "string"
+    },
+    "projection": {
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "maxLength": 64,
+          "minLength": 1,
+          "type": "string"
+        },
+        "version": {
+          "maximum": 9007199254740991,
+          "minimum": 1,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "profile",
+        "version"
+      ],
+      "type": "object"
+    },
+    "redacted": {
+      "additionalProperties": false,
+      "properties": {
+        "rules": {
+          "pattern": "^[0-9a-f]{64}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rules"
+      ],
+      "type": "object"
+    },
+    "removed": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "lineageId": {
+            "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+            "type": "string"
+          },
+          "placement": {
+            "additionalProperties": false,
+            "properties": {
+              "afterLineageId": {
+                "anyOf": [
+                  {
+                    "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "beforeLineageId": {
+                "anyOf": [
+                  {
+                    "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "sectionLineageId": {
+                "anyOf": [
+                  {
+                    "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "afterLineageId",
+              "beforeLineageId",
+              "sectionLineageId"
+            ],
+            "type": "object"
+          },
+          "text": {
+            "maxLength": 1000000,
+            "type": "string"
+          },
+          "tombstoneId": {
+            "pattern": "^[0-9a-f-]{36}~[0-9a-f-]{36}\\.\\d+$",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "heading",
+              "paragraph",
+              "listItem",
+              "tableCell",
+              "code",
+              "image",
+              "thematicBreak",
+              "html",
+              "frontmatter",
+              "footnoteDefinition",
+              "definition",
+              "node",
+              "group",
+              "line"
+            ],
+            "type": "string"
+          },
+          "versionId": {
+            "pattern": "^[0-9a-f-]{36}\\.\\d+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tombstoneId",
+          "lineageId",
+          "versionId",
+          "text",
+          "type",
+          "placement"
+        ],
+        "type": "object"
+      },
+      "maxItems": 200000,
+      "type": "array"
+    },
+    "revisionId": {
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+      "type": "string"
+    },
+    "schemaVersion": {
+      "pattern": "^\\d+\\.\\d+$",
+      "type": "string"
+    },
+    "snapshot": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "type": {
+      "const": "Revision",
+      "type": "string"
+    }
+  },
+  "required": [
+    "type",
+    "schemaVersion",
+    "revisionId",
+    "docId",
+    "path",
+    "parents",
+    "snapshot",
+    "parser",
+    "projection",
+    "blocks",
+    "removed"
+  ],
+  "title": "bb-docs revision v1",
+  "type": "object"
+}

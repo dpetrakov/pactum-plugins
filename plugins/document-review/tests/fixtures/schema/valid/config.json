@@ -1,0 +1,15 @@
+{
+  "hidden": [
+    "drafts/",
+    "!drafts/keep.md"
+  ],
+  "repoId": "00000000-0000-4000-8000-071ca2227754",
+  "roots": [
+    "docs",
+    "README.md"
+  ],
+  "schemaVersion": "1.0",
+  "untracked": [
+    "**/CHANGELOG.md"
+  ]
+}
