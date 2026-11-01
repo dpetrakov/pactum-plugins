@@ -85,6 +85,8 @@ async function exists(file: string) {
 
 async function commitAll(dir: string, message: string) {
   await gx(dir, ["add", "-A"]);
+  // These check-owned fixtures must travel with the temporary clone even if the source ignores review storage.
+  if (await exists(path.join(dir, ".bb-docs"))) await gx(dir, ["add", "-f", "--", ".bb-docs"]);
   await gx(dir, ["commit", "-q", "--no-verify", "-m", message], { allowFailure: true });
 }
 

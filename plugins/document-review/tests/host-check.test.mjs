@@ -14,13 +14,14 @@ process.env.DOCUMENT_REVIEW_CHECK_H7_SCALE ??= "0.1";
 import { resolveCheckout } from "../node/checkout.ts";
 import { ReviewService } from "../node/service.ts";
 
-async function tempRepo({ email = "owner@bb-docs.invalid" } = {}) {
+async function tempRepo({ email = "owner@bb-docs.invalid", ignoredReview = false } = {}) {
   const dir = await fs.realpath(await fs.mkdtemp(path.join(os.tmpdir(), "bb-docs-src-")));
   const run = (...args) => execFileSync("git", args, { cwd: dir, stdio: "pipe" });
   run("init", "-q", "-b", "main");
   run("config", "user.name", "Owner");
   if (email) run("config", "user.email", email);
   run("config", "commit.gpgsign", "false");
+  if (ignoredReview) await fs.writeFile(path.join(dir, ".gitignore"), ".bb-docs/\n");
   await fs.mkdir(path.join(dir, "docs"));
   await fs.writeFile(path.join(dir, "docs/readme.md"), "# Readme\n\nText.\n");
   await fs.writeFile(path.join(dir, "notes.txt"), "not markdown\n");
@@ -43,8 +44,8 @@ async function withIsolatedHome(run) {
   }
 }
 
-test("end-to-end core check passes on a temporary clone and leaves the source untouched", { timeout: 600_000 }, async () => {
-  const source = await tempRepo();
+test("end-to-end core check passes when the source ignores review storage and leaves the source untouched", { timeout: 600_000 }, async () => {
+  const source = await tempRepo({ ignoredReview: true });
   const data = await fs.mkdtemp(path.join(os.tmpdir(), "bb-docs-data-"));
   try {
     const before = execFileSync("git", ["status", "--porcelain"], { cwd: source }).toString() + execFileSync("git", ["rev-parse", "HEAD"], { cwd: source }).toString();

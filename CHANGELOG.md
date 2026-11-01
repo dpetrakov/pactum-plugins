@@ -14,3 +14,5 @@ First public Pactum Docs source release for bb.
 - Self-contained public test corpus, CI and GitHub Pages project site.
 
 No `.bb-docs` schema migration is introduced by this release.
+
+The CLI core check also verifies repositories that ignore `.bb-docs`: generated test data is carried between its temporary clones without changing the source checkout.
