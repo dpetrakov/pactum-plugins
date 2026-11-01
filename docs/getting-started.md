@@ -41,7 +41,7 @@ Removing the plugin does not delete `.bb-docs` from your Git checkout. Review de
 Install [Pactum Mermaid](../plugins/pactum-mermaid-flowchart/README.md) alongside Documents:
 
 ```sh
-bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^0.3.0 --plugin pactum-mermaid-flowchart --tag-prefix pactum-mermaid-flowchart-
+bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^0.3.1 --plugin pactum-mermaid-flowchart --tag-prefix pactum-mermaid-flowchart-
 ```
 
 It adds interactive `flowchart`/`graph` diagrams, source-change marks, personal positions and element comments. Other Mermaid dialects remain source code.

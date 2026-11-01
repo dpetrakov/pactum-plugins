@@ -63,4 +63,4 @@ jobs:
       - run: node plugins/document-review/node_modules/typescript/bin/tsc -p site/tsconfig.json
       - run: node --experimental-strip-types scripts/build-site.mjs
       - run: git diff --exit-code -- site/index.html site/assets/
-      - run: node --test tests/site.test.mjs tests/site-browser.test.mjs
+      - run: node --test tests/site.test.mjs tests/site-browser.test.mjs tests/diagram-browser.test.mjs

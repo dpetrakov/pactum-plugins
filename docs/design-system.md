@@ -20,6 +20,10 @@ Use the existing registry popovers, menus and dialogs. Compact screens use respo
 
 The Info control stays available in the toolbar at narrow widths. Long paths wrap inside its popover/sheet; copying has explicit feedback. Change groups use the same boundaries for visible labels, review stops and read actions. Heading gutters have only the double-check section-read control and comment control. Other blocks keep their group-read check. The fixed 76 px gutter must contain every action; 40 px touch targets can wrap.
 
+## Diagram movement
+
+Use the [shared diagram interaction policy](diagram-interaction.md): stable gesture coordinates, immediate movement inside the visible scrollport, 650 ms outside dwell, a 400 ms ramp and a 24 CSS px/s speed cap. Stop on release or cancellation and preserve the screen anchor. Removed connections whose old geometry no longer matches the current layout stay in the change list rather than appearing as orphan fragments.
+
 ## Verification
 
 For UI changes verify light and dark themes, a host custom theme, a 390 px touch viewport, keyboard navigation and focus return, computed contrast and reduced motion. Keep visual-only controls outside selectable document text and annotation coordinates. The existing token/component layers in `ui/theme.css`, `ui/files.css` and `ui/kit.tsx` define the current implementation.

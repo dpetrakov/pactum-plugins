@@ -22,6 +22,8 @@ Use `npm ci --prefix plugins/document-review` for a clean install. To include th
 
 Follow [docs/design-system.md](docs/design-system.md). Plugin controls inherit bb theme tokens; do not add color literals or another icon library. Keep visible text in the localization mechanism. Verify light/dark, 390 px, keyboard focus, contrast and reduced motion for UI changes. Keep source text, selections and annotation coordinates unchanged by decorative markup.
 
+The public landing must preserve the approved Pactum V03 logo and upright Fraunces wordmark described in [docs/branding.md](docs/branding.md). Do not reinterpret or replace this identity while redesigning a page.
+
 ## Releases
 
 Use immutable tags such as `document-review-v1.13.0`. Keep package versions, collection metadata, site commands and release notes consistent. Never move an existing tag. Read [docs/releasing.md](docs/releasing.md) before a release.

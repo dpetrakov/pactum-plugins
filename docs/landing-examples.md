@@ -9,7 +9,7 @@ npm ci --prefix plugins/document-review
 npm ci --prefix plugins/pactum-mermaid-flowchart
 node plugins/document-review/node_modules/typescript/bin/tsc -p site/tsconfig.json
 node --experimental-strip-types scripts/build-site.mjs
-node --test tests/site.test.mjs tests/site-browser.test.mjs
+node --test tests/site.test.mjs tests/site-browser.test.mjs tests/diagram-browser.test.mjs
 python3 -m http.server --directory site 8080
 ```
 

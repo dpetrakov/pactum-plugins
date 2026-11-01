@@ -22,6 +22,8 @@ The owner requested reuse from the existing private Pactum project. Public files
 | `site/assets/pactum-mark.svg` and favicon set | `docs/design-explorations/assets/favicon/` |
 | Paper texture and stamp grammar | `landing/src/styles.css` |
 
+The approved logo is the terracotta square with the witness dot above its upper-right corner and the upright Fraunces wordmark. Preserve this exact identity in both header and footer; do not substitute a circular seal, rotate it or replace its typeface.
+
 Original SVG/PNG assets are copied without changing their artwork. The landing's social preview is rendered from the new product copy and the reused identity. The site's fonts are self-hosted; their separate licenses are listed in `THIRD_PARTY_NOTICES.md`.
 
 `site/theme.css` is the public site's token source. Dark small text uses the original higher-contrast `ink-soft` value instead of the former muted value. Primary button backgrounds keep the original dark terracotta to retain white-label contrast. Brand colors do not replace bb's host theme tokens inside the plugin.

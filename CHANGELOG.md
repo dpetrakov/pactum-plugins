@@ -1,5 +1,14 @@
 # Changelog
 
+## Mermaid flowchart 0.3.1
+
+- Fix feedback between changing SVG bounds and pointer coordinates during drag. The grabbed node tracks the pointer inside the visible scrollport.
+- Pan outside the visible area only after 650 ms, ramp over 400 ms, and cap speed at 24 CSS px/s independently of zoom and frame rate.
+- Preserve the screen anchor on drop and stop on Escape, cancellation, lost capture or window blur. Reset restores the natural view.
+- Draw removed-edge ghosts only when their original anchors and complete routes remain valid; otherwise retain removals in the change list.
+- Restore the approved square Pactum V03 mark and upright Fraunces wordmark on the landing.
+- No source or stored-coordinate format change.
+
 ## Documents 1.13.1
 
 - Heading gutters show the section-read action and comment action without a duplicate single check. The gutter stays 76 px wide; touch targets wrap inside it.

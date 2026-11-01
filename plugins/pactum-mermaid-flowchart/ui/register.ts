@@ -6,7 +6,7 @@ import { HEADER, mermaidA11y, mermaidDiff } from "./adapter.ts";
 import { mountMermaidCanvas } from "./canvas.tsx";
 
 export const PLUGIN_ID = "pactum-mermaid-flowchart";
-export const PLUGIN_VERSION = "0.3.0";
+export const PLUGIN_VERSION = "0.3.1";
 
 export const registration: VisualizerRegistration = {
   contract: 1,

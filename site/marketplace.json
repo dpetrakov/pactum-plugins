@@ -52,7 +52,7 @@
         "git": {
           "url": "https://github.com/dpetrakov/pactum-plugins.git",
           "subdir": "plugins/pactum-mermaid-flowchart",
-          "range": "^0.3.0",
+          "range": "^0.3.1",
           "tagPrefix": "pactum-mermaid-flowchart-"
         }
       }

@@ -21,7 +21,7 @@ Open Documents, select a Git checkout and enable review when you are ready to sa
 ## Optional Mermaid flowcharts
 
 ```sh
-bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^0.3.0 --plugin pactum-mermaid-flowchart --tag-prefix pactum-mermaid-flowchart-
+bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^0.3.1 --plugin pactum-mermaid-flowchart --tag-prefix pactum-mermaid-flowchart-
 ```
 
 Install it alongside Documents for `flowchart` and `graph` diagrams. It also renders supported Mermaid fences in agent replies.

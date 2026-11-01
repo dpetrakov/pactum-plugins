@@ -3,7 +3,7 @@
 An optional visualizer for Pactum Docs in bb. It renders Mermaid `flowchart` and `graph` blocks and `.mmd`/`.mermaid` files, compares changes to nodes, edges and groups, and supports each reader's own layout.
 
 ```sh
-bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^0.3.0 --plugin pactum-mermaid-flowchart --tag-prefix pactum-mermaid-flowchart-
+bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^0.3.1 --plugin pactum-mermaid-flowchart --tag-prefix pactum-mermaid-flowchart-
 ```
 
 Install Documents separately. The plugin uses the public visualizer contract; it has no private repository imports or hosted backend. Node positions are personal review data; dragging a node does not rewrite Mermaid source. Documents owns comment markers, comparison selection and storage.

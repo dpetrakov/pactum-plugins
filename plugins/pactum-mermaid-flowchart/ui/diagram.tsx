@@ -3,9 +3,13 @@ import { tr } from "../core/i18n.ts";
 // model (never from the source as markup). Where the layout is stored, nodes and groups can always be moved by pointer,
 // touch or keyboard (EP-081: no separate layout mode mode) — a press becomes a drag only past a small threshold, so a
 // click or a tap selects; only nodes and group titles take touches, the empty canvas leaves page scroll to the document. The frame around it (bar, states, comparison, reader's list) is the host's (`document-review/ui/object.tsx`).
-import { memo, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { memo, useEffect, useLayoutEffect, useRef, useState, type KeyboardEvent, type PointerEvent } from "react";
 import type { FlowModel, GraphEdge, GraphNode, NodeShape } from "../core/mermaid.ts";
 import { autoPositions, LAYOUT_ENGINE_VERSION, NODE_PAD, shapeSize, type Box, type GroupBox, type Layout, type Measure, type Pins, type Point } from "../core/layout.ts";
+
+import { startPointerDrag, restoreScreenAnchor, type PointerDrag, type DiagramViewport, type ScreenAnchor } from "./drag-viewport.ts";
+import type { Ghosts } from "../core/ghosts.ts";
+export type { Ghosts } from "../core/ghosts.ts";
 
 const STEP = 8, BIG_STEP = 40;
 const family = () => getComputedStyle(document.body).fontFamily || "sans-serif";
@@ -214,7 +218,7 @@ export type Mark = "added" | "changed" | undefined;
 /** What changed in the file since the base, by id (EP-061; never the reader's moves): the shape of the mark is in the drawing, not only its colour. */
 export type Marks = { nodes: Map<string, Mark>; edges: Map<string, Mark>; groups: Map<string, Mark> };
 /** Removed elements drawn where they stood in the base (D37: a dashed ghost, not focusable, not movable). */
-export type Ghosts = { nodes: { id: string; label: string; shape: NodeShape; box: Box }[]; edges: { id: string; points: Point[] }[] };
+
 
 /** «+» added, «~» changed: a small badge on the node's corner (the word is in the summary and the reader's list). */
 function Badge({ mark, x, y }: { mark: Mark | "removed"; x: number; y: number }) {
@@ -227,56 +231,94 @@ const membersOf = (model: FlowModel, group: string): string[] => [
   ...model.groups.filter((g) => g.parent === group).flatMap((g) => membersOf(model, g.id)),
 ];
 
-type Drag = { kind: "node" | "group"; id: string; ids: string[]; start: Point; origin: Pins; pointer: number | null; active: boolean };
-/** A press moves an element only after this many diagram px: a click or a tap selects it (EP-081: moving is always on). */
-const DRAG_THRESHOLD = 4;
-
 /** The diagram itself: SVG from the layout; in layout mode nodes/groups are draggable and focusable. */
-export const Diagram = memo(function Diagram({ model, layout, moving, onDrag, onDrop, onCancel, uid, selected, onSelect, zoom, marks, ghosts = null, reducedMotion = false }: {
+export const Diagram = memo(function Diagram({ model, layout, moving, onDrag, onDrop, onCancel, uid, selected, onSelect, zoom, marks, ghosts = null, reducedMotion = false, onViewport }: {
   model: FlowModel; layout: Layout; moving: boolean; uid: string; selected: string | null; zoom: number; marks: Marks | null; ghosts?: Ghosts | null; reducedMotion?: boolean;
+  onViewport?(frame: DiagramViewport | null): void;
   onSelect(id: string | null): void; onDrag(ids: string[], delta: Point, origin: Pins): void; onDrop(ids: string[]): void; onCancel(origin: Pins): void;
 }) {
   const svg = useRef<SVGSVGElement>(null);
-  const drag = useRef<Drag | null>(null);
+  const drag = useRef<PointerDrag | null>(null);
   const [hover, setHover] = useState<string | null>(null);
-  const toDiagram = (event: { clientX: number; clientY: number }): Point => {
-    const element = svg.current!;
-    const matrix = element.getScreenCTM();
-    if (!matrix) return { x: 0, y: 0 };
-    const p = new DOMPoint(event.clientX, event.clientY).matrixTransform(matrix.inverse());
-    return { x: p.x, y: p.y };
-  };
+  const [viewport, setViewport] = useState<DiagramViewport | null>(null);
+  const anchor = useRef<ScreenAnchor | null>(null);
+  const callbacks = useRef({ onDrag, onDrop, onCancel, onViewport });
+  callbacks.current = { onDrag, onDrop, onCancel, onViewport };
+  const updateViewport = (frame: DiagramViewport | null) => { setViewport(frame); callbacks.current.onViewport?.(frame); };
+  useLayoutEffect(() => {
+    if (drag.current) { drag.current.align(); return; }
+    if (viewport) {
+      const x = Math.min(viewport.origin.x, layout.origin.x), y = Math.min(viewport.origin.y, layout.origin.y);
+      const width = Math.max(viewport.origin.x + viewport.width, layout.origin.x + layout.width) - x;
+      const height = Math.max(viewport.origin.y + viewport.height, layout.origin.y + layout.height) - y;
+      if (Math.abs(x - viewport.origin.x) > .01 || Math.abs(y - viewport.origin.y) > .01 || Math.abs(width - viewport.width) > .01 || Math.abs(height - viewport.height) > .01) {
+        updateViewport({ origin: { x, y }, width, height }); return;
+      }
+    }
+    if (anchor.current && svg.current) { restoreScreenAnchor(svg.current, anchor.current); anchor.current = null; }
+  }, [viewport, layout]);
+  const previousPinned = useRef(layout.pinned.length);
+  useEffect(() => {
+    if (!drag.current && previousPinned.current > 0 && !layout.pinned.length) updateViewport(null);
+    previousPinned.current = layout.pinned.length;
+  }, [layout.pinned.length]);
+  useLayoutEffect(() => {
+    updateViewport(null); anchor.current = null;
+    return () => { drag.current?.dispose(); drag.current = null; anchor.current = null; };
+  }, [model]);
+  useEffect(() => { drag.current?.end(true); }, [zoom]);
+  useEffect(() => {
+    const cancel = () => drag.current?.end(true);
+    const hidden = () => { if (document.hidden) cancel(); };
+    window.addEventListener("blur", cancel); document.addEventListener("visibilitychange", hidden);
+    return () => { window.removeEventListener("blur", cancel); document.removeEventListener("visibilitychange", hidden); drag.current?.dispose(); };
+  }, []);
+  useEffect(() => {
+    const element = svg.current;
+    if (!moving || !element) return;
+    // Native scrolling can still cancel pointer gestures on SVG descendants.
+    // Consume touches only on node/group handles; blank canvas retains scrolling.
+    const touch = (event: TouchEvent) => {
+      if (event.touches.length > 1) { drag.current?.end(true); return; }
+      if (event.target instanceof Element && event.target.closest(".dr-dg__node:not(.dr-dg__ghost),.dr-dg__gtitle")) event.preventDefault();
+    };
+    element.addEventListener("touchstart", touch, { passive: false });
+    return () => element.removeEventListener("touchstart", touch);
+  }, [moving]);
+  useEffect(() => { if (!moving) drag.current?.end(true); }, [moving]);
   const originOf = (ids: string[]): Pins => Object.fromEntries(ids.map((id) => [id, { x: layout.nodes[id].x, y: layout.nodes[id].y }]));
   const start = (event: PointerEvent, kind: "node" | "group", id: string) => {
-    if (event.button !== 0) return;
-    // Reading mode: a click selects the element (for node comments), nothing is dragged and the page keeps scrolling.
+    if (event.button !== 0 || drag.current) return;
     if (!moving) { onSelect(id); return; }
-    event.preventDefault();
-    event.stopPropagation();
-    const ids = kind === "node" ? [id] : membersOf(model, id);
-    drag.current = { kind, id, ids, start: toDiagram(event), origin: originOf(ids), pointer: event.pointerId, active: false };
-    (event.currentTarget as Element).setPointerCapture(event.pointerId);
-    onSelect(id);
+    event.preventDefault(); event.stopPropagation();
+    const ids = kind === "node" ? [id] : membersOf(model, id), origin = originOf(ids);
+    const previousViewport = viewport;
+    drag.current = startPointerDrag({ svg: svg.current!, layout: { ...layout, ...(viewport ?? {}) }, ids, origin, pointer: event.pointerId, event,
+      viewport: updateViewport,
+      drag(...args) { callbacks.current.onDrag(...args); },
+      finish(commit, at) {
+        drag.current = null; anchor.current = at;
+        if (commit) callbacks.current.onDrop(ids); else { callbacks.current.onCancel(origin); updateViewport(previousViewport); }
+      },
+    });
+    (event.currentTarget as SVGElement).focus({ preventScroll: true });
+    (event.currentTarget as Element).setPointerCapture(event.pointerId); onSelect(id);
   };
   const move = (event: PointerEvent) => {
-    const d = drag.current;
-    if (!d || d.pointer !== event.pointerId) return;
-    const p = toDiagram(event);
-    if (!d.active && Math.hypot(p.x - d.start.x, p.y - d.start.y) < DRAG_THRESHOLD) return;
-    d.active = true;
-    onDrag(d.ids, { x: Math.round(p.x - d.start.x), y: Math.round(p.y - d.start.y) }, d.origin);
+    if (drag.current?.pointer !== event.pointerId) return;
+    event.preventDefault(); drag.current.move(event);
   };
   const end = (event: PointerEvent) => {
-    const d = drag.current;
-    if (!d || d.pointer !== event.pointerId) return;
-    drag.current = null;
-    if (!d.active) return;
-    if (event.type === "pointercancel") { onCancel(d.origin); return; }
-    onDrop(d.ids);
+    if (drag.current?.pointer === event.pointerId) drag.current.end(event.type !== "pointerup");
   };
   // Keyboard: Enter starts moving the focused node, arrows move (Shift — larger step), Enter confirms, Esc cancels.
   const keyboard = useRef<{ id: string; ids: string[]; origin: Pins; delta: Point } | null>(null);
   const key = (event: KeyboardEvent, kind: "node" | "group", id: string) => {
+    if (drag.current) {
+      if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); drag.current.end(true); }
+      else if (["Enter", " ", "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) event.preventDefault();
+      return;
+    }
     if (!moving) { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); onSelect(id); } return; }
     const k = keyboard.current;
     if (event.key === "Enter" || event.key === " ") {
@@ -304,11 +346,11 @@ export const Diagram = memo(function Diagram({ model, layout, moving, onDrag, on
   const bodyOf = (id: string): Body | undefined => { const node = nodeById.get(id), box = layout.nodes[id]; return node && box ? { shape: node.shape, box } : undefined; };
   const enter = (event: PointerEvent, id: string) => { if (event.pointerType !== "touch") setHover(id); };
   const leave = (id: string) => setHover((current) => (current === id ? null : current));
-  const box = layout;
+  const box = viewport ?? layout;
   return <svg ref={svg} className="dr-dg" data-moving={moving || undefined} data-reduced-motion={reducedMotion || undefined} data-compare={marks ? "" : undefined} data-dim={shown ? "" : undefined}
     viewBox={`${box.origin.x} ${box.origin.y} ${box.width} ${box.height}`}
     width={Math.round(box.width * zoom)} height={Math.round(box.height * zoom)} role="img" aria-roledescription={tr("diagram", "схема")}
-    aria-label={tr(`Diagram: ${model.nodes.length} nodes, ${model.edges.length} edges`, `Схема: ${model.nodes.length} узлов, ${model.edges.length} связей`)} onPointerMove={move} onPointerUp={end} onPointerCancel={end}>
+    aria-label={tr(`Diagram: ${model.nodes.length} nodes, ${model.edges.length} edges`, `Схема: ${model.nodes.length} узлов, ${model.edges.length} связей`)} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end}>
     {model.groups.map((group) => {
       const g: GroupBox = layout.groups[group.id];
       if (!g) return null;
