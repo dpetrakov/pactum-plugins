@@ -2,6 +2,14 @@ name: Release Mermaid flowchart
 on:
   push:
     tags: ['pactum-mermaid-flowchart-v*']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing immutable Mermaid release tag to verify and publish
+        required: true
+        type: string
+env:
+  RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
 permissions:
   contents: read
 jobs:
@@ -10,15 +18,19 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - uses: actions/setup-node@v4
         with:
           node-version: 22.22.0
           cache: npm
           cache-dependency-path: plugins/pactum-mermaid-flowchart/package-lock.json
       - run: npm ci --prefix plugins/pactum-mermaid-flowchart
+      # The collection-wide source checker uses Documents' TypeScript installation.
+      - run: npm ci --prefix plugins/document-review
       - run: npm install --global bb-app@0.46.1
       - run: node scripts/check-public-source.mjs
-      - run: node scripts/check-release.mjs "${GITHUB_REF_NAME}"
+      - run: node scripts/check-release.mjs "$RELEASE_TAG"
       - run: npm run typecheck --prefix plugins/pactum-mermaid-flowchart
       - run: npm test --prefix plugins/pactum-mermaid-flowchart
       - run: npm audit --omit=dev --audit-level=high --prefix plugins/pactum-mermaid-flowchart
@@ -30,7 +42,9 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
       - name: Create release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release create "$GITHUB_REF_NAME" --verify-tag --title "Pactum Mermaid ${GITHUB_REF_NAME#pactum-mermaid-flowchart-v}" --notes-file .github/release-mermaid-notes.md
+        run: gh release create "$RELEASE_TAG" --verify-tag --title "Pactum Mermaid ${RELEASE_TAG#pactum-mermaid-flowchart-v}" --notes-file .github/release-mermaid-notes.md
