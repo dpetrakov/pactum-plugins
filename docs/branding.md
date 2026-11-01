@@ -20,7 +20,6 @@ The owner requested reuse from the existing private Pactum project. Public files
 | `site/theme.css` | `landing/src/styles.css`, Trinity light/dark tokens |
 | V03 seal and wordmark styles | `landing/src/styles.css`, brand/seal rules |
 | `site/assets/pactum-mark.svg` and favicon set | `docs/design-explorations/assets/favicon/` |
-| Light/dark handshake illustrations | `docs/design-explorations/assets/handshake-*.png` |
 | Paper texture and stamp grammar | `landing/src/styles.css` |
 
 Original SVG/PNG assets are copied without changing their artwork. The landing's social preview is rendered from the new product copy and the reused identity. The site's fonts are self-hosted; their separate licenses are listed in `THIRD_PARTY_NOTICES.md`.
