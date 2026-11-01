@@ -1,0 +1,36 @@
+name: Release Mermaid flowchart
+on:
+  push:
+    tags: ['pactum-mermaid-flowchart-v*']
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.0
+          cache: npm
+          cache-dependency-path: plugins/pactum-mermaid-flowchart/package-lock.json
+      - run: npm ci --prefix plugins/pactum-mermaid-flowchart
+      - run: npm install --global bb-app@0.46.1
+      - run: node scripts/check-public-source.mjs
+      - run: node scripts/check-release.mjs "${GITHUB_REF_NAME}"
+      - run: npm run typecheck --prefix plugins/pactum-mermaid-flowchart
+      - run: npm test --prefix plugins/pactum-mermaid-flowchart
+      - run: npm audit --omit=dev --audit-level=high --prefix plugins/pactum-mermaid-flowchart
+      - run: bb plugin build plugins/pactum-mermaid-flowchart
+  publish:
+    needs: verify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" --verify-tag --title "Pactum Mermaid ${GITHUB_REF_NAME#pactum-mermaid-flowchart-v}" --notes-file .github/release-mermaid-notes.md

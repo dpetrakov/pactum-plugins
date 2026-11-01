@@ -36,6 +36,19 @@ jobs:
           PACTUM_BROWSER_TESTS: '1'
       - run: npm audit --omit=dev --audit-level=high --prefix plugins/document-review
       - run: bb plugin build plugins/document-review
+  mermaid:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.0
+      - run: npm ci --prefix plugins/pactum-mermaid-flowchart
+      - run: npm install --global bb-app@0.46.1
+      - run: npm run typecheck --prefix plugins/pactum-mermaid-flowchart
+      - run: npm test --prefix plugins/pactum-mermaid-flowchart
+      - run: npm audit --omit=dev --audit-level=high --prefix plugins/pactum-mermaid-flowchart
+      - run: bb plugin build plugins/pactum-mermaid-flowchart
   site:
     runs-on: ubuntu-latest
     steps:
@@ -43,4 +56,11 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22.22.0
-      - run: node --test tests/site.test.mjs
+      - run: npm ci --prefix plugins/document-review
+      - run: npm ci --prefix plugins/pactum-mermaid-flowchart
+      - run: npx playwright install --with-deps chromium
+        working-directory: plugins/document-review
+      - run: node plugins/document-review/node_modules/typescript/bin/tsc -p site/tsconfig.json
+      - run: node --experimental-strip-types scripts/build-site.mjs
+      - run: git diff --exit-code -- site/index.html site/assets/
+      - run: node --test tests/site.test.mjs tests/site-browser.test.mjs

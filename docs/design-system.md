@@ -18,7 +18,7 @@ Commands react immediately, ignore repeated activation and preserve focus. Delay
 
 Use the existing registry popovers, menus and dialogs. Compact screens use responsive sheets. Escape closes the top layer and returns focus to its trigger. Sticky headers and footers must not hide jump targets or focused controls. Reduced-motion preferences disable sliding, rotation and smooth scrolling.
 
-The Info control stays available in the toolbar at narrow widths. Long paths wrap inside its popover/sheet; copying has explicit feedback. Change groups use the same boundaries for visible labels, review stops and read actions.
+The Info control stays available in the toolbar at narrow widths. Long paths wrap inside its popover/sheet; copying has explicit feedback. Change groups use the same boundaries for visible labels, review stops and read actions. Heading gutters have only the double-check section-read control and comment control. Other blocks keep their group-read check. The fixed 76 px gutter must contain every action; 40 px touch targets can wrap.
 
 ## Verification
 

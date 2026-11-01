@@ -11,12 +11,20 @@ Pactum Docs is a standalone plugin for [bb](https://getbb.app). Read a document,
 With bb 0.46 or later and a compatible Plugin SDK installed:
 
 ```sh
-bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^1.13.0 --plugin document-review --tag-prefix document-review-
+bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^1.13.1 --plugin document-review --tag-prefix document-review-
 ```
 
 The public product is **Pactum Docs**. Its stable bb plugin ID is `document-review` and the installed display name is **Documents**.
 
 Open Documents, select a Git checkout and enable review when you are ready to save comments and read marks. The plugin needs a Git name and email for writes. It works without any other Pactum or bb-workbench plugin.
+
+## Optional Mermaid flowcharts
+
+```sh
+bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^0.3.0 --plugin pactum-mermaid-flowchart --tag-prefix pactum-mermaid-flowchart-
+```
+
+Install it alongside Documents for `flowchart` and `graph` diagrams. It also renders supported Mermaid fences in agent replies.
 
 ## What you get
 
@@ -26,7 +34,7 @@ Open Documents, select a Git checkout and enable review when you are ready to sa
 - One-click reading of adjacent change groups, with Undo.
 - Document information, path copying and original-file downloads.
 - Git-backed shared review data in `.bb-docs`; optional device-local review for ignored files.
-- An open visualizer contract for embedded objects. Additional diagram visualizers are not bundled in this first release; unhandled fences remain source code.
+- An open visualizer contract for embedded objects. The optional [Mermaid flowchart visualizer](plugins/pactum-mermaid-flowchart/README.md) adds node/edge comparison, personal positions and element comments. Other fences stay source code.
 
 English is the default interface language. Russian is available in settings.
 
@@ -53,7 +61,7 @@ bb plugin build plugins/document-review
 node scripts/check-public-source.mjs
 ```
 
-This repository is the source of truth for the public plugins. Each plugin owns its package manifest, dependencies and release tags. The static project website lives in `site/` and is deployed to GitHub Pages.
+This repository is the source of truth for the public plugins. Each plugin owns its package manifest, dependencies and release tags. The static project website lives in `site/` and is deployed to GitHub Pages. See [the landing example guide](docs/landing-examples.md) for its reproducible build and browser checks.
 
 ## Scope
 

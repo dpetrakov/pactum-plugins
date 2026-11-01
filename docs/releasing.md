@@ -16,3 +16,9 @@ The collection is `.bb/plugins.json`. The site marketplace pins the public repos
 Do not release private review events, snapshots, local paths, credentials or personal project fixtures. Do not publish generated host/server bundles unless their source and license notices are present. Generated build output is excluded from Git; bb builds Git installs through its own trusted plugin installer.
 
 For a format-changing release, test current -> previous -> current with representative data before release. A code-only release still needs current-schema and data-preservation checks but does not invent a migration or rename `.bb-docs`.
+
+## Mermaid flowchart
+
+`pactum-mermaid-flowchart` is independently versioned. Run its package typecheck, tests, audit and `bb plugin build plugins/pactum-mermaid-flowchart`. Its immutable release tags use `pactum-mermaid-flowchart-vX.Y.Z`; the corresponding Git install prefix is `pactum-mermaid-flowchart-`. The dedicated release workflow verifies the package and creates its release. Keep `ui/register.ts`'s visualizer version aligned with the package version.
+
+When changing landing fixtures or either renderer, rebuild the [landing examples](landing-examples.md) and run their browser checks before publishing main.

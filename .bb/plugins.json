@@ -6,6 +6,10 @@
     {
       "name": "document-review",
       "source": "./plugins/document-review"
+    },
+    {
+      "name": "pactum-mermaid-flowchart",
+      "source": "./plugins/pactum-mermaid-flowchart"
     }
   ]
 }

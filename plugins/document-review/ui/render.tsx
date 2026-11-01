@@ -191,7 +191,7 @@ function Gutter({ block, handlers, mark, quiet = false }: { block: ViewBlock; ha
       <Icon name="MessageSquare" />{markers.length}
     </button>}
     <span className="dr-bacts">
-      {unread && handlers.writable && <button type="button" className="dr-btn dr-btn--icon" title={tr("Mark read (R)", "Прочитано (R)")} aria-label={tr("Mark read (R)", "Прочитано (R)")} onClick={() => handlers.onRead(block.index)}><Icon name="Check" /></button>}
+      {unread && block.type !== "heading" && handlers.writable && <button type="button" className="dr-btn dr-btn--icon" title={tr("Mark read (R)", "Прочитано (R)")} aria-label={tr("Mark read (R)", "Прочитано (R)")} onClick={() => handlers.onRead(block.index)}><Icon name="Check" /></button>}
       {block.type === "heading" && handlers.writable && <button type="button" className="dr-btn dr-btn--icon" title={tr("Section read", "Раздел прочитан")} aria-label={tr("Section read", "Раздел прочитан")} onClick={() => handlers.onReadSection(block.index)}><Icon name="CheckCheck" /></button>}
       <button type="button" className="dr-btn dr-btn--icon" title={`${commentLabel} (C)`}
         aria-label={commentLabel} onClick={() => handlers.onComment(block.index, kind)}><Icon name="MessageSquarePlus" /></button>

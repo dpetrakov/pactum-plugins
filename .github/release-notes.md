@@ -1,11 +1,9 @@
-Pactum Docs is a standalone document review plugin for bb.
+Documents 1.13.1 keeps heading actions inside the existing document margin: one section-read double check and one comment action. Touch controls wrap within the same gutter. No review-storage migration is introduced.
 
-Track unread changes, discuss precise annotations, send an agent a review batch and accept the result. Shared review history stays in `.bb-docs` in your Git checkout.
+The redesigned [Pactum landing](https://pactum.work/) includes interactive review rounds, the real Documents renderer and Mermaid canvas, table resizing, tracked folders and independent reader states.
 
 ```sh
-bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^1.13.0 --plugin document-review --tag-prefix document-review-
+bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^1.13.1 --plugin document-review --tag-prefix document-review-
 ```
 
-Requires bb 0.46 or later and Plugin SDK 0.6.49 or later. No other Pactum plugin is required. This release does not include an external MCP server or additional diagram visualizers.
-
-See CHANGELOG.md and the repository documentation for details.
+Requires bb 0.46+ and Plugin SDK 0.6.49+. Mermaid flowcharts are an optional separate plugin. See CHANGELOG.md for both packages.

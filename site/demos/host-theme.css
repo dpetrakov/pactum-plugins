@@ -1,0 +1,47 @@
+/* bb host palette snapshot for standalone product previews. Plugin styles remain token-derived. */
+[data-demo-workbench]{color-scheme:light;
+  --canvas:oklch(100% 0 0);--ink:oklch(32.11% 0 0);
+  --primary:oklch(27% 0 0);--primary-foreground:oklch(100% 0 0);
+  --muted-foreground:oklch(44% 0 0);--subtle-foreground:oklch(50% 0 0);
+  --timeline-accent:oklch(55% .1 250);
+  --diff-added:oklch(40% .13 163);--diff-removed:oklch(40% .17 28);--pr-merged:oklch(53% .2 295);
+  --destructive:oklch(45% .19 25.86);--destructive-text:oklch(45% .19 25.86);--destructive-foreground:oklch(100% 0 0);
+  --warning:oklch(70% .16 50);--warning-text:oklch(55% .14 50);--attention:oklch(74% .15 80);--success:oklch(70% .15 155);
+  --mix-secondary:8%;--mix-muted:11%;--mix-border:14%;--mix-hairline:14.7%;--mix-seam:9.5%;--mix-input:29.5%;--mix-hover:5.9%;--mix-active:11.8%;--mix-sidebar:2.2%;--mix-sidebar-accent:8%;--mix-selected:16%;--mix-destructive:6%;
+  --shadow-xs:0 2px 0 0 #33333312;--shadow-md:0 2px 0 0 #33333326,0 2px 4px -1px #33333326;--shadow-lg:0 2px 0 0 #33333326,0 4px 6px -1px #33333326;--shadow-xl:0 2px 0 0 #33333326,0 8px 10px -1px #33333326;
+}
+.dark [data-demo-workbench]{color-scheme:dark;
+  --canvas:oklch(19.5% 0 0);--ink:oklch(81% 0 0);
+  --primary:oklch(82% 0 0);--primary-foreground:oklch(21.78% 0 0);
+  --muted-foreground:oklch(78% 0 0);--subtle-foreground:oklch(68% 0 0);
+  --timeline-accent:oklch(72% .09 250);
+  --diff-added:oklch(77% .17 163);--diff-removed:oklch(72% .19 22);--pr-merged:oklch(68% .18 295);
+  --destructive:oklch(56% .19 22.17);--destructive-text:oklch(65% .16 22);--destructive-foreground:oklch(100% 0 0);
+  --warning:oklch(75% .16 50);--warning-text:oklch(75% .16 50);--attention:oklch(80% .15 80);--success:oklch(74% .15 155);
+  --mix-secondary:13%;--mix-muted:16%;--mix-border:19.4%;--mix-hairline:21%;--mix-seam:11%;--mix-input:32.6%;--mix-hover:13.8%;--mix-active:22.5%;--mix-sidebar:4.3%;--mix-sidebar-accent:12%;--mix-selected:12%;--mix-destructive:8%;
+  --shadow-xs:0 2px 0 0 #0003;--shadow-md:0 2px 0 0 #0000004d,0 2px 4px -1px #00000080;--shadow-lg:0 2px 0 0 #0000004d,0 4px 6px -1px #00000080;--shadow-xl:0 2px 0 0 #00000059,0 8px 10px -1px #0000008c;
+}
+
+[data-demo-workbench],.dark [data-demo-workbench]{
+  --background:var(--canvas);--foreground:var(--ink);--card:var(--canvas);--popover:var(--canvas);
+  --secondary:color-mix(in oklch,var(--ink) var(--mix-secondary),var(--canvas));--accent:var(--secondary);
+  --muted:color-mix(in oklch,var(--ink) var(--mix-muted),var(--canvas));
+  --border:color-mix(in oklch,var(--ink) var(--mix-border),var(--canvas));
+  --border-hairline:color-mix(in oklch,var(--ink) var(--mix-hairline),var(--canvas));
+  --border-seam:color-mix(in oklch,var(--ink) var(--mix-seam),var(--canvas));
+  --input:color-mix(in oklch,var(--ink) var(--mix-input),var(--canvas));
+  --ring:var(--primary);--file-accent:var(--timeline-accent);
+  --state-hover:color-mix(in oklab,var(--ink) var(--mix-hover),transparent);
+  --state-active:color-mix(in oklab,var(--ink) var(--mix-active),transparent);
+  --surface-recessed:color-mix(in oklab,var(--ink) 6%,transparent);
+  --surface-raised:color-mix(in oklab,var(--ink) 2.5%,transparent);
+  --surface-scrim:color-mix(in oklab,var(--canvas) 92%,transparent);
+  --surface-selected:color-mix(in oklab,var(--primary) var(--mix-selected),transparent);
+  --surface-destructive:color-mix(in oklab,var(--destructive) var(--mix-destructive),transparent);
+  --sidebar:color-mix(in oklch,var(--ink) var(--mix-sidebar),var(--canvas));
+  --sidebar-accent:color-mix(in oklch,var(--ink) var(--mix-sidebar-accent),var(--canvas));
+  --font-sans:"Inter Variable",Inter,system-ui,sans-serif;--font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;
+  --radius:.5rem;--icon-stroke-width:1.75;
+  background:var(--background);color:var(--foreground);
+}
+

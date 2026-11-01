@@ -1,0 +1,50 @@
+{
+  "name": "bb-plugin-pactum-mermaid-flowchart",
+  "version": "0.3.0",
+  "type": "module",
+  "description": "Review Mermaid flowcharts in Documents: source-change marks, personal node layouts and comments on diagram elements.",
+  "scripts": {
+    "check": "node --experimental-strip-types --test --test-reporter=dot tests/*.test.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "npm run check"
+  },
+  "engines": {
+    "bb": ">=0.46",
+    "bbPluginSdk": ">=0.6.49",
+    "node": ">=22.19.0"
+  },
+  "bb": {
+    "name": "Pactum \u00b7 Mermaid flowchart",
+    "description": "Review Mermaid flowcharts in Documents: source-change marks, personal node layouts and comments on diagram elements.",
+    "branding": {
+      "icon": "Workflow"
+    },
+    "server": "./server.ts",
+    "app": "./app.tsx",
+    "skills": [
+      "skills"
+    ]
+  },
+  "dependencies": {
+    "@dagrejs/dagre": "3.1.1"
+  },
+  "devDependencies": {
+    "@get-bb/plugin-sdk": "0.6.49",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "typescript": "^5.7.0"
+  },
+  "license": "Apache-2.0",
+  "homepage": "https://pactum.work",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dpetrakov/pactum-plugins.git",
+    "directory": "plugins/pactum-mermaid-flowchart"
+  },
+  "bugs": {
+    "url": "https://github.com/dpetrakov/pactum-plugins/issues"
+  }
+}

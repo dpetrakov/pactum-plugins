@@ -16,3 +16,9 @@ Do not remove copyright or license notices while translating comments or moving 
 ## Landing fonts
 
 Fraunces, Inter and JetBrains Mono are bundled as original variable font files from the [Google Fonts repository](https://github.com/google/fonts). Each uses SIL Open Font License 1.1. Full licenses and copyright notices are in `LICENSES/fraunces-OFL.txt`, `LICENSES/inter-OFL.txt` and `LICENSES/jetbrainsmono-OFL.txt`.
+
+## Mermaid layout and landing bundle
+
+`@dagrejs/dagre` and its `@dagrejs/graphlib` dependency use the MIT license. Their complete notices are retained in `LICENSES/dagre-MIT.txt` and `LICENSES/graphlib-MIT.txt`. The exact versions are recorded in the Mermaid package lockfile and `docs/mermaid-dependency-licenses.json`.
+
+The landing's generated diagram bundle includes React, React DOM, Scheduler, Dagre and Graphlib. `site/assets/diagram-demo.js.LEGAL.txt` carries its bundled notices and full MIT grants, also retained under `LICENSES/`; its editable source is `site/demos/diagram.ts` and the public Mermaid package. Build it with `node --experimental-strip-types scripts/build-site.mjs` after installing both packages' dependencies. Document markup and CSS come from the public Documents package.

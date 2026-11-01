@@ -1,6 +1,6 @@
 # Visualizer extensions
 
-Documents can render embedded fences or supported whole-file objects through a separate trusted bb plugin. The first public Documents package does not bundle an extra visualizer; unhandled objects remain readable as source.
+Documents can render embedded fences or supported whole-file objects through a separate trusted bb plugin. The optional [Pactum Mermaid flowchart package](../plugins/pactum-mermaid-flowchart/README.md) is independently installable from this collection. Unhandled objects remain readable as source.
 
 `plugins/document-review/visualizers-contract.ts` is the portable contract source. A visualizer bundles a compatible copy, registers at app-overlay mount and disposes its registration on unmount. Read its exported types for the exact methods and host context.
 

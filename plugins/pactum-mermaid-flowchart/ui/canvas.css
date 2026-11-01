@@ -1,0 +1,143 @@
+/* Canvas uses bb host tokens. Neutral node colors give comparison marks semantic priority. */
+.dr-dg {
+  display: block;
+  /* Nodes: process, terminal, decision and data. */
+  --dg-text: var(--foreground);
+  --dg-card: color-mix(in oklab, var(--file-accent) 12%, var(--background));
+  --dg-terminal: color-mix(in oklab, var(--file-accent) 24%, var(--background));
+  --dg-decision: var(--background);
+  --dg-data: color-mix(in oklab, var(--foreground) 8%, var(--background));
+  --dg-lid: color-mix(in oklab, var(--foreground) 16%, var(--background));
+  --dg-outline: color-mix(in oklab, var(--file-accent) 60%, var(--dr-field));
+  --dg-outline-neutral: color-mix(in oklab, var(--dr-field) 75%, var(--foreground));
+  --dg-hover-shift: var(--foreground);
+  /* Edges and labels. */
+  --dg-link: var(--subtle-foreground);
+  --dg-link-strong: var(--foreground);
+  --dg-pill: var(--background);
+  --dg-pill-edge: var(--border);
+  --dg-pill-text: var(--muted-foreground);
+  /* Groups and title bands. */
+  --dg-group: var(--dr-group);
+  --dg-group-edge: var(--border);
+  --dg-band: color-mix(in oklab, var(--foreground) 5%, transparent);
+  --dg-band-text: var(--muted-foreground);
+  /* Selection and focus. */
+  --dg-selected: var(--foreground);
+  --dg-focus: var(--ring);
+  --dg-dur: 80ms;
+  --dg-dur-dim: 120ms;
+}
+.dr-dg[data-fit] { max-width: 100%; height: auto; }
+.dr-dg[data-moving] { user-select: none; -webkit-user-select: none; }
+.dr-dg[data-moving] .dr-dg__node, .dr-dg[data-moving] .dr-dg__gtitle { touch-action: none; }
+
+/* Nodes. */
+.dr-dg__shape { fill: var(--dg-card); stroke: var(--dg-outline); stroke-width: 1.25; stroke-linejoin: round; }
+.dr-dg__node[data-family="terminal"] .dr-dg__shape { fill: var(--dg-terminal); }
+.dr-dg__node[data-family="decision"] .dr-dg__shape { fill: var(--dg-decision); stroke-width: 1.5; }
+.dr-dg__node[data-family="data"] .dr-dg__shape { fill: var(--dg-data); stroke: var(--dg-outline-neutral); }
+.dr-dg__lid { fill: var(--dg-lid); stroke: var(--dg-outline-neutral); stroke-width: 1.25; }
+.dr-dg__line { fill: none; stroke: var(--dg-outline); stroke-width: 1; }
+.dr-dg__text { fill: var(--dg-text); font: 500 13px var(--font-sans); }
+.dr-dg__halo { fill: none; stroke: none; stroke-width: 2; pointer-events: none; }
+.dr-dg__node { cursor: default; }
+.dr-dg__node:focus { outline: none; }
+.dr-dg__node:hover .dr-dg__shape { fill: color-mix(in oklab, var(--dg-hover-shift) 6%, var(--dg-card)); }
+.dr-dg__node[data-family="terminal"]:hover .dr-dg__shape { fill: color-mix(in oklab, var(--dg-hover-shift) 6%, var(--dg-terminal)); }
+.dr-dg__node[data-family="decision"]:hover .dr-dg__shape { fill: color-mix(in oklab, var(--dg-hover-shift) 5%, var(--dg-decision)); }
+.dr-dg__node[data-family="data"]:hover .dr-dg__shape { fill: color-mix(in oklab, var(--dg-hover-shift) 6%, var(--dg-data)); }
+/* Selection uses foreground; keyboard focus uses the ring token. */
+.dr-dg__node[data-selected] .dr-dg__halo { stroke: var(--dg-selected); }
+.dr-dg__node:focus-visible .dr-dg__halo { stroke: var(--dg-focus); }
+
+/* Edges. */
+.dr-dg__edge { fill: none; stroke: var(--dg-link); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.dr-dg__edge--dotted { stroke-dasharray: 1 5; }
+.dr-dg__edge--thick { stroke-width: 2.75; }
+.dr-dg__edge--invisible { display: none; }
+.dr-dg__edge--fallback { stroke-dasharray: 2 4; }
+.dr-dg__tip { fill: var(--dg-link); stroke: var(--dg-link); stroke-width: 1; stroke-linejoin: round; }
+.dr-dg__tip--cross { fill: none; stroke-width: 1.75; stroke-linecap: round; }
+.dr-dg__elabel rect { fill: var(--dg-pill); stroke: var(--dg-pill-edge); stroke-width: 1; }
+.dr-dg__elabel text { fill: var(--dg-pill-text); font: 500 12px var(--font-sans); }
+/* Highlight incident edges on hover and selection; dim unrelated elements. */
+.dr-dg__link[data-hl] > .dr-dg__edge { stroke: var(--dg-link-strong); }
+.dr-dg__link[data-hl] > .dr-dg__tip { fill: var(--dg-link-strong); stroke: var(--dg-link-strong); }
+.dr-dg__link[data-hl] > .dr-dg__tip--cross { fill: none; }
+.dr-dg__link[data-hl] .dr-dg__elabel text { fill: var(--dg-text); }
+.dr-dg__link[data-hl] .dr-dg__elabel rect { stroke: var(--dg-outline); }
+.dr-dg[data-dim] .dr-dg__link:not([data-hl]), .dr-dg[data-dim] .dr-dg__node:not([data-hl]) { opacity: .35; }
+
+/* Groups. */
+.dr-dg__group > .dr-dg__gbox { fill: var(--dg-group); stroke: var(--dg-group-edge); stroke-width: 1; }
+.dr-dg__band { fill: var(--dg-band); }
+.dr-dg__bandline { stroke: var(--dg-group-edge); stroke-width: 1; }
+.dr-dg__gtitle { fill: var(--dg-band-text); font: 600 12px var(--font-sans); }
+.dr-dg[data-moving] .dr-dg__node, .dr-dg[data-moving] .dr-dg__gtitle { cursor: grab; }
+.dr-dg[data-moving] .dr-dg__node:active { cursor: grabbing; }
+.dr-dg__gtitle:focus { outline: none; }
+.dr-dg__gtitle:focus-visible, .dr-dg__group[data-selected] .dr-dg__gtitle { fill: var(--dg-text); text-decoration: underline; }
+.dr-dg__group[data-selected] > .dr-dg__gbox { stroke: var(--dg-selected); stroke-width: 1.5; }
+
+/* File-change marks; personal layout moves never become source changes. */
+.dr-dg[data-compare] .dr-dg__node:not([data-diff]) .dr-dg__shape { fill: var(--background); stroke: var(--dg-outline-neutral); }
+.dr-dg[data-compare] .dr-dg__node:not([data-diff]) .dr-dg__line { stroke: var(--dg-outline-neutral); }
+.dr-dg__node[data-diff="added"] .dr-dg__shape { stroke: var(--dr-added); stroke-width: 2; fill: var(--dr-added-wash); }
+.dr-dg__node[data-diff="changed"] .dr-dg__shape { stroke: var(--dr-changed); stroke-width: 2; stroke-dasharray: 5 3; fill: var(--dr-changed-wash); }
+.dr-dg__badge circle { stroke: var(--background); stroke-width: 1.5; }
+.dr-dg__badge text { fill: var(--background); font: 700 12px var(--font-sans); }
+.dr-dg__node[data-diff="added"] .dr-dg__badge circle { fill: var(--dr-added); }
+.dr-dg__node[data-diff="changed"] .dr-dg__badge circle { fill: var(--dr-changed); }
+[data-diff="added"] > .dr-dg__edge { stroke: var(--dr-added); stroke-width: 2.25; }
+[data-diff="changed"] > .dr-dg__edge { stroke: var(--dr-changed); stroke-width: 2.25; stroke-dasharray: 6 3; }
+[data-diff="added"] > .dr-dg__tip { fill: var(--dr-added); stroke: var(--dr-added); }
+[data-diff="changed"] > .dr-dg__tip { fill: var(--dr-changed); stroke: var(--dr-changed); }
+[data-diff] > .dr-dg__tip--cross { fill: none; }
+.dr-dg__group[data-diff="added"] > .dr-dg__gbox { stroke: var(--dr-added); stroke-width: 1.5; }
+.dr-dg__group[data-diff="changed"] > .dr-dg__gbox { stroke: var(--dr-changed); stroke-width: 1.5; stroke-dasharray: 5 3; }
+/* Removed elements are noninteractive dashed ghosts. */
+.dr-dg__ghost { pointer-events: none; }
+.dr-dg__ghost .dr-dg__shape, .dr-dg__ghost .dr-dg__lid { fill: none; stroke: var(--dr-removed); stroke-width: 1.25; stroke-dasharray: 4 3; }
+.dr-dg__ghost .dr-dg__line { stroke: var(--dr-removed); }
+.dr-dg__ghost .dr-dg__text { fill: var(--dr-removed); text-decoration: line-through; }
+.dr-dg__ghost-edge { fill: none; stroke: var(--dr-removed); stroke-width: 1.5; stroke-dasharray: 4 3; }
+.dr-dg__node[data-diff="removed"] .dr-dg__badge circle { fill: var(--dr-removed); }
+
+/* Color transitions respect reduced motion. */
+.dr-dg__shape, .dr-dg__edge, .dr-dg__tip, .dr-dg__halo, .dr-dg__elabel rect, .dr-dg__elabel text {
+  transition: fill var(--dg-dur) cubic-bezier(.2, .9, .1, 1), stroke var(--dg-dur) cubic-bezier(.2, .9, .1, 1);
+}
+.dr-dg__link, .dr-dg__node { transition: opacity var(--dg-dur-dim) cubic-bezier(.2, .9, .1, 1); }
+.dr-dg[data-reduced-motion] *, .dr-dg[data-reduced-motion] { transition: none; }
+@media (prefers-reduced-motion: reduce) {
+  .dr-dg *, .dr-dg { transition: none; }
+}
+
+/* Chat Mermaid uses the same canvas and token formulas. */
+.pmf-chat {
+  --dr-field: color-mix(in oklch, var(--ink) 55%, var(--canvas));
+  --dr-group: var(--surface-recessed);
+  margin: 8px 0; border: 1px solid var(--border); border-radius: 8px; background: var(--background); overflow: hidden;
+}
+.pmf-chat__bar {
+  display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 0 4px 0 12px;
+  border-bottom: 1px solid var(--border-hairline); color: var(--muted-foreground); font: 500 12px/1 var(--font-sans);
+}
+.pmf-chat__title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pmf-chat__toggle {
+  height: 24px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-foreground);
+  font: 500 12px/1 var(--font-sans); cursor: pointer; transition: background-color 80ms, color 80ms;
+}
+@media (hover: hover) { .pmf-chat__toggle:hover { background: var(--state-hover); color: var(--foreground); } }
+.pmf-chat__toggle[aria-pressed="true"] { background: var(--state-active); color: var(--foreground); }
+.pmf-chat__toggle:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+@media (pointer: coarse) { .pmf-chat__toggle { height: 40px; padding: 0 12px; } }
+/* Narrow views preserve label readability and use horizontal scrolling. */
+.pmf-chat__canvas { display: flex; justify-content: safe center; padding: 12px; overflow-x: auto; }
+.pmf-chat__canvas > .dr-dg { max-width: 100%; min-width: calc(var(--pmf-w, 0) * 0.6px); height: auto; flex: none; }
+.pmf-chat__code {
+  margin: 0; padding: 12px; max-height: 360px; overflow: auto; background: var(--surface-recessed); color: var(--foreground);
+  font: 400 12px/1.6 var(--font-mono); white-space: pre; tab-size: 2;
+}
+@media (prefers-reduced-motion: reduce) { .pmf-chat__toggle { transition: none; } }

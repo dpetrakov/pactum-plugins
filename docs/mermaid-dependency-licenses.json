@@ -1,0 +1,116 @@
+[
+  {
+    "package": "@dagrejs/dagre",
+    "version": "3.1.1",
+    "license": "MIT",
+    "development": false
+  },
+  {
+    "package": "@dagrejs/graphlib",
+    "version": "4.0.5",
+    "license": "MIT",
+    "development": false
+  },
+  {
+    "package": "@get-bb/plugin-sdk",
+    "version": "0.6.49",
+    "license": "UNKNOWN",
+    "development": true
+  },
+  {
+    "package": "@types/node",
+    "version": "22.20.5",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "@types/react",
+    "version": "19.3.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "@types/react-dom",
+    "version": "19.3.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "cross-spawn",
+    "version": "7.0.6",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "csstype",
+    "version": "3.2.3",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "isexe",
+    "version": "2.0.0",
+    "license": "ISC",
+    "development": true
+  },
+  {
+    "package": "path-key",
+    "version": "3.1.1",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "react",
+    "version": "19.3.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "react-dom",
+    "version": "19.3.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "scheduler",
+    "version": "0.28.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "shebang-command",
+    "version": "2.0.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "shebang-regex",
+    "version": "3.0.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "typescript",
+    "version": "5.9.3",
+    "license": "Apache-2.0",
+    "development": true
+  },
+  {
+    "package": "undici-types",
+    "version": "6.21.0",
+    "license": "MIT",
+    "development": true
+  },
+  {
+    "package": "which",
+    "version": "2.0.2",
+    "license": "ISC",
+    "development": true
+  },
+  {
+    "package": "zod",
+    "version": "4.6.5",
+    "license": "MIT",
+    "development": true
+  }
+]

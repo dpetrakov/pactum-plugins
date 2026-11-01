@@ -4,15 +4,17 @@ import test from "node:test";
 const read = (file) => fs.readFileSync(new URL(`../${file}`, import.meta.url), "utf8");
 test("site installation command targets the actual collection and tag convention", () => {
   const collection = JSON.parse(read(".bb/plugins.json"));
-  const entry = collection.plugins.find((p) => p.name === "document-review");
-  assert.equal(entry.source, "./plugins/document-review");
-  const pkg = JSON.parse(read("plugins/document-review/package.json"));
   const html = read("site/index.html");
-  assert.ok(html.includes(`@^${pkg.version} --plugin document-review --tag-prefix document-review-`));
-  const listing = JSON.parse(read("site/marketplace.json")).plugins[0];
-  assert.equal(listing.source.git.range, `^${pkg.version}`);
-  assert.equal(listing.source.git.subdir, entry.source.slice(2));
-  assert.equal(listing.source.git.tagPrefix, "document-review-");
+  for (const entry of collection.plugins) {
+    const pkg = JSON.parse(read(`${entry.source.slice(2)}/package.json`));
+    assert.ok(html.includes(`@^${pkg.version} --plugin ${entry.name} --tag-prefix ${entry.name}-`));
+    for (const manifest of ["marketplace.json", "site/marketplace.json"]) {
+      const listing = JSON.parse(read(manifest)).plugins.find(p => p.id === entry.name);
+      assert.equal(listing.source.git.range, `^${pkg.version}`);
+      assert.equal(listing.source.git.subdir, entry.source.slice(2));
+      assert.equal(listing.source.git.tagPrefix, `${entry.name}-`);
+    }
+  }
 });
 test("all local page assets exist and the install controls are accessible", () => {
   const html = read("site/index.html");

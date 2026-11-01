@@ -1,5 +1,18 @@
 # Changelog
 
+## Documents 1.13.1
+
+- Heading gutters show the section-read action and comment action without a duplicate single check. The gutter stays 76 px wide; touch targets wrap inside it.
+- Public landing examples use the real Documents renderer and Mermaid canvas, with a synthetic comment-to-agent review round, table resizing, tracked folders and independent Git readers.
+- No review-storage schema change.
+
+## Mermaid flowchart 0.3.0
+
+- First standalone public visualizer package in this collection.
+- Compare Mermaid flowchart nodes and connections, including removed elements.
+- Move nodes by pointer, touch or keyboard without editing source; attach comments to diagram elements through Documents.
+- Self-contained parser, layout engine, English/Russian localization and contract tests.
+
 ## Documents 1.13.0
 
 First public Pactum Docs source release for bb.
