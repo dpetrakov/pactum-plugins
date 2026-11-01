@@ -22,7 +22,11 @@ jobs:
       - run: node scripts/check-public-source.mjs
       - run: node scripts/check-release.mjs "${GITHUB_REF_NAME}"
       - run: npm run typecheck --prefix plugins/document-review
-      - run: npm test --prefix plugins/document-review
+      # Keep the strict CPU benchmark isolated from concurrent integration tests.
+      - run: node --experimental-strip-types --test tests/markdown-perf.test.mjs
+        working-directory: plugins/document-review
+      - run: node --experimental-strip-types --test --test-skip-pattern='^H7 projection' --test-reporter=dot tests/*.test.mjs
+        working-directory: plugins/document-review
         env:
           PACTUM_BROWSER_TESTS: '1'
       - run: npm audit --omit=dev --audit-level=high --prefix plugins/document-review
