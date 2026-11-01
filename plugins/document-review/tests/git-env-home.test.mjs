@@ -29,16 +29,26 @@ test("gitEnv keeps an explicit HOME", () => {
 });
 
 test("a global user.email is seen even when the daemon starts without HOME", async () => {
-  const repo = await fs.mkdtemp(path.join(os.tmpdir(), "drv-home-"));
-  execFileSync("git", ["init", "-q"], { cwd: repo });
-  const expected = execFileSync("git", ["config", "--global", "--get", "user.email"], { encoding: "utf8" }).trim();
+  const fixture = await fs.mkdtemp(path.join(os.tmpdir(), "drv-home-"));
+  const repo = path.join(fixture, "repo");
+  const home = path.join(fixture, "account-home");
+  const expected = "reader@pactum-tests.invalid";
   const saved = process.env.HOME;
-  delete process.env.HOME;
+  const userInfo = os.userInfo;
   try {
+    await fs.mkdir(repo);
+    await fs.mkdir(home);
+    await fs.writeFile(path.join(home, ".gitconfig"), `[user]\n  email = ${expected}\n`);
+    execFileSync("git", ["init", "-q"], { cwd: repo });
+    // Model a service account with its own global configuration, without touching the real account's files.
+    os.userInfo = (...args) => ({ ...userInfo(...args), homedir: home });
+    delete process.env.HOME;
     const info = await resolveCheckout(repo);
-    assert.equal(info.identity.email, expected || null);
+    assert.equal(info.identity.email, expected);
   } finally {
-    process.env.HOME = saved;
-    await fs.rm(repo, { recursive: true, force: true });
+    os.userInfo = userInfo;
+    if (saved === undefined) delete process.env.HOME;
+    else process.env.HOME = saved;
+    await fs.rm(fixture, { recursive: true, force: true });
   }
 });
