@@ -1,10 +1,11 @@
+import { openThreadTab } from "./bb-compat.ts";
 // The tree of the roots (EP-011, EP-013-T01; design W-06 EP-019): one component for the sidebar tab of the sidebar-tabs
 // host, the fallback column of the «Documents» screen and the embedded modes. Files and folders of all roots once with
 // level guides, per-document signals with a dot and count, and the selected document with its
 // sections grouped by a rail; path and heading search; Hide and
 // Untracked with inherited rules; deleted virtual documents, rename proposals and checkout selection.
 // Keyboard by APG Tree: ↑↓, →/← expand/collapse/parent, Home/End, Enter, Shift+F10 — the row menu, type-ahead.
-import { useBbContext, useBbNavigate } from "@get-bb/plugin-sdk/app";
+import { experimental_useAppPanel, useBbContext, useBbNavigate } from "@get-bb/plugin-sdk/app";
 import { Icon } from "./icons.tsx";
 import { useWorkbenchFocus } from "../focus-contract.ts";
 import { Fragment, type KeyboardEvent, type ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -402,6 +403,7 @@ type Item = { key: string; depth: number; node: ReactNode };
 export function DocsTree({ onNavigate, compact = false, navigateTo }: { onNavigate?: () => void; compact?: boolean; navigateTo?: (route: Route) => void }) {
   const enableJob = useEnableJob();
   const navigate = useBbNavigate();
+  const panel = experimental_useAppPanel();
   const bb = useBbContext();
   const route = useUi((ui) => ui.route);
   const ctxKey = useUi((ui) => ui.ctxKey);
@@ -465,7 +467,7 @@ export function DocsTree({ onNavigate, compact = false, navigateTo }: { onNaviga
   };
   const openBeside = (path: string) => (bb.threadId && !navigateTo ? () => {
     if (route.kind === "none") return;
-    navigate.openThreadPanel({ actionId: "docs", title: path.split("/").pop(), params: { subPath: subPathOf({ ...route, doc: path }) } });
+    openThreadTab(panel, navigate, { actionId: "docs", title: path.split("/").pop(), params: { subPath: subPathOf({ ...route, doc: path }) } });
     onNavigate?.();
   } : null);
 

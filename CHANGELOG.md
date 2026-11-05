@@ -1,5 +1,10 @@
 # Changelog
 
+## Documents 1.13.2
+
+- Support the unified tab registration and panel controller in bb 0.48 while retaining bb 0.46 fallback paths. Keep existing tab IDs, current-surface navigation, instance parameters and host refusal behavior.
+- Preserve the existing review format, reader state and public plugin ID. Minimum bb and SDK requirements are unchanged.
+
 ## Mermaid flowchart 0.3.1
 
 - Fix feedback between changing SVG bounds and pointer coordinates during drag. The grabbed node tracks the pointer inside the visible scrollport.

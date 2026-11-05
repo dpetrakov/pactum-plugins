@@ -10,6 +10,7 @@ import "./feedback.css";
 import "./ui/theme.css";
 import "./ui/files.css";
 import { definePluginApp } from "@get-bb/plugin-sdk/app";
+import { registerNavPanel, registerThreadPanel } from "./ui/bb-compat.ts";
 import { tr } from "./core/i18n.ts";
 import { AgentTab } from "./ui/agent.tsx";
 import { DocsLinkProvider, MarkdownFileOpener, ThreadDocsPanel } from "./ui/embedded.tsx";
@@ -23,7 +24,7 @@ import { bindToasts } from "./ui/toast.ts";
 bindToasts();
 
 export default definePluginApp((app) => {
-  app.slots.navPanel({
+  registerNavPanel(app, {
     id: "docs", title: tr("Documents", "Документы"), icon: "FileText", path: PANEL_PATH, component: DocsPage,
     fixedTabs: [
       { ...commentsTab, title: tr("Comments", "Замечания"), icon: "MessageSquare", layout: "flush", component: CommentsTab },
@@ -35,7 +36,7 @@ export default definePluginApp((app) => {
   // «Documents» for other plugins of the window (docs-link-contract.ts).
   app.slots.experimental_appOverlay({ id: "docs-link", component: DocsLinkProvider });
   // The same viewer next to the chat (H3): the thread's checkout, this thread as the default recipient.
-  app.slots.threadPanelAction({ id: "docs", title: tr("Documents", "Документы"), icon: "FileText", layout: "flush", component: ThreadDocsPanel });
+  registerThreadPanel(app, { id: "docs", title: tr("Documents", "Документы"), icon: "FileText", layout: "flush", component: ThreadDocsPanel });
   // Links and files of every supported format open in the viewer. Standard preview
   // falls back to bb's preview. Keep the markdown opener ID so existing user preferences survive updates.
   app.slots.fileOpener({ id: "markdown", title: tr("Documents (review)", "Документы (обзор)"), extensions: OPENER_EXTENSIONS, component: MarkdownFileOpener });

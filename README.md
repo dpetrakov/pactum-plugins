@@ -11,7 +11,7 @@ Pactum Docs is a standalone plugin for [bb](https://getbb.app). Read a document,
 With bb 0.46 or later and a compatible Plugin SDK installed:
 
 ```sh
-bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^1.13.1 --plugin document-review --tag-prefix document-review-
+bb plugin install git:https://github.com/dpetrakov/pactum-plugins.git@^1.13.2 --plugin document-review --tag-prefix document-review-
 ```
 
 The public product is **Pactum Docs**. Its stable bb plugin ID is `document-review` and the installed display name is **Documents**.
@@ -45,6 +45,7 @@ English is the default interface language. Russian is available in settings.
 - [Architecture](docs/architecture.md)
 - [Visualizer extensions](docs/visualizers.md)
 - [Development and contributions](CONTRIBUTING.md)
+- [bb version compatibility](docs/bb-compatibility.md)
 - [Release procedure](docs/releasing.md)
 - [Security policy](SECURITY.md)
 - [Changelog](CHANGELOG.md)

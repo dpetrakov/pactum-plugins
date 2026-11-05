@@ -1,6 +1,6 @@
 {
   "name": "bb-plugin-document-review",
-  "version": "1.13.1",
+  "version": "1.13.2",
   "type": "module",
   "scripts": {
     "check": "node --experimental-strip-types --test --test-reporter=dot tests/*.test.mjs",

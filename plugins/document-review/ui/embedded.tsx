@@ -2,7 +2,8 @@
 // recipient is that thread), the file opener for Markdown (a file tab next to the chat), and the window-level link
 // that «Projects» uses to open the documentation of a concrete checkout. One domain model: the same DocsPage, the
 // same store, the same explicit checkout in the route; «In Documents» keeps the document and position (H3).
-import { type PluginFileOpenerProps, type PluginThreadPanelProps, useBbNavigate, useRpc } from "@get-bb/plugin-sdk/app";
+import { type PluginFileOpenerProps, useBbNavigate, useRpc } from "@get-bb/plugin-sdk/app";
+import type { ThreadPanelProps } from "./bb-compat.ts";
 import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import { provideDocsLink } from "../docs-link-contract.ts";
 import type { rpcContract } from "../server.ts";
@@ -28,7 +29,7 @@ function useThreadContext(threadId: string | null): { context: ThreadContext | n
 }
 
 /** Documents in a thread side panel uses that thread's checkout; To current thread targets its owning thread. */
-export function ThreadDocsPanel({ threadId, params }: PluginThreadPanelProps) {
+export function ThreadDocsPanel({ threadId, params }: ThreadPanelProps) {
   const rpc = useRpc<typeof rpcContract>();
   bindRpc(rpc);
   const initial = params && typeof params === "object" && !Array.isArray(params) && typeof (params as { subPath?: unknown }).subPath === "string" ? (params as { subPath: string }).subPath : null;

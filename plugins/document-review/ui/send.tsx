@@ -1,3 +1,4 @@
+import { openFixedTab } from "./bb-compat.ts";
 // «Send to agent» (E12, E15; design EP-020-T06): the split button «Send to agent · N» and its menu — «Scope» and
 // «Recipient» as rows of choice with counts, unavailable ones with the reason, the summary with warnings and the
 // button with the same verb and number. While a batch runs the button shows the agent state («Agent: Queued in the thread»).
@@ -110,7 +111,7 @@ export function SendButton({ doc, compact = false }: { doc: string; compact?: bo
         notify(result.state === "dispatch-unknown"
           ? tr("Delivery not confirmed. Check the “Agent” tab; it isn't retried automatically.", "Отправка не подтверждена — проверьте во вкладке «Агент»; повтор автоматически не выполняется.")
           : tr(`Sent to agent: ${counted(result.items, W.annotation)}${result.state === "queued" ? " · queued in the thread" : ""}`, `Передано агенту: ${counted(result.items, W.annotation)}${result.state === "queued" ? " · в очереди треда" : ""}`));
-        panel.openFixedTab({ surface: { kind: "current" }, tab: agentTab });
+        openFixedTab(panel, { surface: { kind: "current" }, tab: agentTab });
       }
     } finally {
       sendingRef.current = false;
@@ -122,7 +123,7 @@ export function SendButton({ doc, compact = false }: { doc: string; compact?: bo
   const send = () => { setOpen(false); void command.start(); };
   if (label) {
     return <Tip label={tr(`This checkout's batch isn't finished yet${allCount ? ` · ${counted(allCount, W.instruction)} ${plural(allCount, WAIT)} for the next one` : ""}`, `Пакет этой рабочей копии ещё не завершён${allCount ? ` · ${counted(allCount, W.instruction)} ${plural(allCount, WAIT)} следующего` : ""}`)}>
-      <Button onClick={() => panel.openFixedTab({ surface: { kind: "current" }, tab: agentTab })} aria-label={tr(`Agent: ${label.text}`, `Агент: ${label.text}`)}>
+      <Button onClick={() => openFixedTab(panel, { surface: { kind: "current" }, tab: agentTab })} aria-label={tr(`Agent: ${label.text}`, `Агент: ${label.text}`)}>
         <Icon name="Bot" />{compact ? null : <span className="dr-trunc" style={{ maxWidth: 220 }}>{tr(`Agent: ${label.text}`, `Агент: ${label.text}`)}</span>}
         {label.tone === "warn" && <span className="dr-dot dr-dot--waiting" aria-hidden />}
       </Button>

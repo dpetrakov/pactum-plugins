@@ -1,3 +1,4 @@
+import { openFixedTab } from "./bb-compat.ts";
 // «Documents» screen (navPanel; design W-06): the header in one row (D3) with priorities by the column width, «Waiting for you»,
 // banners, the update bar (F9), the composer at the selection, highlights, the pass footer and keys. All jumps go through
 // revealBlock (EP-018): the sticky header and footer never hide the target or the keyboard focus.
@@ -217,7 +218,7 @@ export function DocsPage({ subPath = "", embedded = null }: { subPath?: string; 
   }, [embedded, navigate]);
   const openComments = useCallback(() => {
     if (embedded) setCommentsOpen(true);
-    else panel.openFixedTab({ surface: { kind: "current" }, tab: commentsTab });
+    else openFixedTab(panel, { surface: { kind: "current" }, tab: commentsTab });
   }, [embedded, panel]);
   const loading = useUi((ui) => ui.loading);
   const showDiff = useUi((ui) => ui.showDiff);
